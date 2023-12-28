@@ -2,3 +2,6 @@
 .ruff_cache
 .envrc
 .idea
+*.pyc
+.DS_Store
+__pycache__

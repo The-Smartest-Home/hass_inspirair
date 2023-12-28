@@ -1,0 +1,60 @@
+#: ha_aldes/modbus/model.py:5 ha_aldes/modbus/model.py:19
+msgid "Auto"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:6
+msgid "Hygro"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:7
+msgid "Constant Speed"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:11
+msgid "Holidays"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:12
+msgid "Standard"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:13
+msgid "Kitchen High Speed"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:14
+msgid "Guests"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:18
+msgid "Off"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:20
+msgid "Winter optimisation"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:21
+msgid "Summer optimisation"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:22
+msgid "Open"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:26
+msgid "Separated Speeds"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:27
+msgid "Separated Airflows"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:28
+msgid "Separated Preasures"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:29
+msgid "Adjusted Pressure"
+msgstr ""
+
