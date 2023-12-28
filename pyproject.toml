@@ -9,6 +9,7 @@ packages = [{include = "ha_aldes"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.12"
+pymodbus = {version = "^3.6.2", extras = ["serial"]}
 
 
 [tool.poetry.group.dev.dependencies]
