@@ -1,0 +1,33 @@
+---
+# This workflow will install Python dependencies and run tests with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: pre-commit
+
+on:
+  push:
+    # Run against all branches
+    # branches: [ "main" ]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  # Inspired by https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#caching-packages
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          init-shell: >-
+            bash
+          cache-environment: true
+          post-cleanup: "all"
+
+      - uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: --hook-stage commit --all-files

@@ -1,0 +1,54 @@
+default_install_hook_types: [pre-commit, commit-msg]
+default_stages: [commit, manual]
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        stages:
+          - commit
+          - manual
+        exclude: (data/raw/|deployment/)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.278
+    hooks:
+      - id: ruff
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        files: "^ha_aldes/"
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+        args:
+          - "--maxkb=10000"
+      - id: check-toml
+      - id: check-xml
+        exclude: (^deployment/)
+      - id: check-merge-conflict
+        stages:
+          - commit
+          - merge-commit
+          - manual
+      - id: check-case-conflict
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.5.0
+    hooks:
+      - id: commitlint
+        additional_dependencies: ["@commitlint/config-conventional"]
+        stages:
+          - commit-msg
+
+  - repo: https://github.com/hadolint/hadolint/
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        files: Dockerfile
+        stages:
+          - commit
