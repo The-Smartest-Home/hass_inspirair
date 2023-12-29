@@ -45,4 +45,4 @@ line-length = 100 # sync with black
 [tool.pydantic-mypy]
 init_forbid_extra = true
 #init_typed = true
-warn_required_dynamic_aliases = true
+#warn_required_dynamic_aliases = true

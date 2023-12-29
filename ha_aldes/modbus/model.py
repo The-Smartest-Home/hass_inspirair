@@ -125,48 +125,56 @@ class BypassPosition(Selection):
 
 
 class AldesModbusResponse(BaseModel):
-    id: SensorBase[str]
-    serial_id: SensorBase[str]
-    sw_version: SensorBase[str]
-    regulation_mode: RegulationMode
-    fan_mode: FanMode
-    night_cooling: SensorBase[int]
-    bypass_exchanger: BypassExchanger
+    id: SensorBase[str] = Field(description=_("id"))
+    serial_id: SensorBase[str] = Field(description=_("serial_id"))
+    sw_version: SensorBase[str] = Field(description=_("sw_version"))
+    regulation_mode: RegulationMode = Field(description=_("regulation_mode"))
+    fan_mode: FanMode = Field(description=_("fan_mode"))
+    night_cooling: SensorBase[int] = Field(description=_("night_cooling"))
+    bypass_exchanger: BypassExchanger = Field(description=_("bypass_exchanger"))
 
-    regulation_system: RegulationSystem
-    holiday_time: TimeSensor
-    kitchen_time: TimeSensor
-    boost_time: TimeSensor
-    filter_time: SensorBase[int]
-    aux_time_1: SensorBase[int]
-    aux_time_2: SensorBase[int]
-    extract_airflow: FlowSensor
-    supply_airflow: FlowSensor
-    extract_pressure: PressureSensor
-    supply_pressure: PressureSensor
-    extract_speed: SpeedSensor
-    supply_speed: SpeedSensor
-    extract_supply_ratio: SensorBase[int]
-    temperature_summer_comfort: TemperaturSensor
-    u1_value: SensorBase[int]
-    u2_value: SensorBase[int]
-    supply_voltage: VoltageSensor
-    voltage_0_10: SensorBase[int]
-    switch_state: SensorBase[int]
-    usb_state: SensorBase[int]
-    radio_state: SensorWithUnit
-    ibus_reception: SensorBase[int]
-    ibus_auxiliary: SensorBase[int]
-    hmi_installer: SensorBase[int]
-    hmi_user: SensorBase[int]
-    filter_condition: SensorBase[int]
-    filter_condition_time: SensorBase[int]
-    bypass_position: BypassPosition
-    bypass_consumption: SensorBase[int]
-    outdoor_air_temperature: TemperaturSensor
-    indoor_air_temperature: TemperaturSensor
-    error_code: SensorWithUnit
-    error_code_2: SensorWithUnit
+    regulation_system: RegulationSystem = Field(description=_("regulation_system"))
+    holiday_time: TimeSensor = Field(description=_("holiday_time"))
+    kitchen_time: TimeSensor = Field(description=_("kitchen_time"))
+    boost_time: TimeSensor = Field(description=_("boost_time"))
+    filter_time: SensorBase[int] = Field(description=_("filter_time"))
+    aux_time_1: SensorBase[int] = Field(description=_("aux_time_1"))
+    aux_time_2: SensorBase[int] = Field(description=_("aux_time_2"))
+    extract_airflow: FlowSensor = Field(description=_("extract_airflow"))
+    supply_airflow: FlowSensor = Field(description=_("supply_airflow"))
+    extract_pressure: PressureSensor = Field(description=_("extract_pressure"))
+    supply_pressure: PressureSensor = Field(description=_("supply_pressure"))
+    extract_speed: SpeedSensor = Field(description=_("extract_speed"))
+    supply_speed: SpeedSensor = Field(description=_("supply_speed"))
+    extract_supply_ratio: SensorBase[int] = Field(description=_("extract_supply_ratio"))
+    temperature_summer_comfort: TemperaturSensor = Field(
+        description=_("temperature_summer_comfort")
+    )
+    u1_value: SensorBase[int] = Field(description=_("u1_value"))
+    u2_value: SensorBase[int] = Field(description=_("u2_value"))
+    supply_voltage: VoltageSensor = Field(description=_("supply_voltage"))
+    voltage_0_10: SensorBase[int] = Field(description=_("voltage_0_10"))
+    switch_state: SensorBase[int] = Field(description=_("switch_state"))
+    usb_state: SensorBase[int] = Field(description=_("usb_state"))
+    radio_state: SensorWithUnit = Field(description=_("radio_state"))
+    ibus_reception: SensorBase[int] = Field(description=_("ibus_reception"))
+    ibus_auxiliary: SensorBase[int] = Field(description=_("ibus_auxiliary"))
+    hmi_installer: SensorBase[int] = Field(description=_("hmi_installer"))
+    hmi_user: SensorBase[int] = Field(description=_("hmi_user"))
+    filter_condition: SensorBase[int] = Field(description=_("filter_condition"))
+    filter_condition_time: SensorBase[int] = Field(
+        description=_("filter_condition_time")
+    )
+    bypass_position: BypassPosition = Field(description=_("bypass_position"))
+    bypass_consumption: SensorBase[int] = Field(description=_("bypass_consumption"))
+    outdoor_air_temperature: TemperaturSensor = Field(
+        description=_("outdoor_air_temperature")
+    )
+    indoor_air_temperature: TemperaturSensor = Field(
+        description=_("indoor_air_temperature")
+    )
+    error_code: SensorWithUnit = Field(description=_("error_code"))
+    error_code_2: SensorWithUnit = Field(description=_("error_code_2"))
 
     @model_validator(mode="wrap")  # type: ignore  [arg-type]
     def _validate(
