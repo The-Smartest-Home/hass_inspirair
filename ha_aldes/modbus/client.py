@@ -38,10 +38,10 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
         **{
             k: v
             for k, v in [
-                ("id", decoder_1.decode_32bit_uint()),  # 1-2
-                ("serial_id", decoder_1.decode_64bit_uint()),  # 3-6;
+                ("id", str(decoder_1.decode_32bit_uint())),  # 1-2
+                ("serial_id", str(decoder_1.decode_64bit_uint())),  # 3-6;
                 (None, decoder_1.skip_bytes(5)),  # 7-11
-                ("sw_version", decoder_1.decode_16bit_uint()),  # 12
+                ("sw_version", str(decoder_1.decode_16bit_uint())),  # 12
                 (
                     "regulation_mode",
                     decoder_2.decode_16bit_uint(),

@@ -31,31 +31,31 @@ OptionsDict = Annotated[
 ]
 
 
-class SensorWithUnit(SensorBase[int]):
+class SensorWithUnit(SensorBase[T], Generic[T]):
     unit: str = Field(default="")
 
 
-class TemperaturSensor(SensorWithUnit):
+class TemperaturSensor(SensorWithUnit[float]):
     unit: str = Field(default="°C")
 
 
-class VoltageSensor(SensorWithUnit):
+class VoltageSensor(SensorWithUnit[int]):
     unit: str = Field(default="V")
 
 
-class FlowSensor(SensorWithUnit):
+class FlowSensor(SensorWithUnit[int]):
     unit: str = Field(default="m³/h")
 
 
-class PressureSensor(SensorWithUnit):
+class PressureSensor(SensorWithUnit[int]):
     unit: str = Field(default="Pa")
 
 
-class SpeedSensor(SensorWithUnit):
+class SpeedSensor(SensorWithUnit[int]):
     unit: str = Field(default="m/s")
 
 
-class TimeSensor(SensorWithUnit):
+class TimeSensor(SensorWithUnit[int]):
     unit: str = Field(default="min")
 
 
@@ -156,8 +156,8 @@ class AldesModbusResponse(BaseModel):
     voltage_0_10: SensorBase[int] = Field(description=_("voltage_0_10"))
     switch_state: SensorBase[int] = Field(description=_("switch_state"))
     usb_state: SensorBase[int] = Field(description=_("usb_state"))
-    radio_state: SensorWithUnit = Field(description=_("radio_state"))
-    ibus_reception: SensorBase[int] = Field(description=_("ibus_reception"))
+    radio_state: SensorWithUnit[int] = Field(description=_("radio_state"))
+    ibus_receptions: SensorBase[int] = Field(description=_("ibus_receptions"))
     ibus_auxiliary: SensorBase[int] = Field(description=_("ibus_auxiliary"))
     hmi_installer: SensorBase[int] = Field(description=_("hmi_installer"))
     hmi_user: SensorBase[int] = Field(description=_("hmi_user"))
@@ -173,8 +173,8 @@ class AldesModbusResponse(BaseModel):
     indoor_air_temperature: TemperaturSensor = Field(
         description=_("indoor_air_temperature")
     )
-    error_code: SensorWithUnit = Field(description=_("error_code"))
-    error_code_2: SensorWithUnit = Field(description=_("error_code_2"))
+    error_code: SensorWithUnit[int] = Field(description=_("error_code"))
+    error_code_2: SensorWithUnit[int] = Field(description=_("error_code_2"))
 
     @model_validator(mode="wrap")  # type: ignore  [arg-type]
     def _validate(

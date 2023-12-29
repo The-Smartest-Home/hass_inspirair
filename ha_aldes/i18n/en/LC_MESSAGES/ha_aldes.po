@@ -199,7 +199,7 @@ msgid "radio_state"
 msgstr "Radio State"
 
 #: ha_aldes/modbus/model.py:158
-msgid "ibus_reception"
+msgid "ibus_receptions"
 msgstr "Ibus Reception"
 
 #: ha_aldes/modbus/model.py:159
