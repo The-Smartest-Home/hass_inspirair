@@ -2,7 +2,7 @@ import os
 import socket
 from typing import Generator, Union
 
-from ha_aldes.ha.models import (
+from ha_aldes.ha.model import (
     ClimateConfig,
     DefaultConfig,
     Device,
