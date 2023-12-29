@@ -1,19 +1,12 @@
+import pymodbus.client as ModbusClient
 from pymodbus import Framer
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
-import pymodbus.client as ModbusClient
 
-from ha_aldes.modbus.model import (
-    regulation_mode_mapping,
-    fan_mode_mapping,
-    bypass_exchanger_mapping,
-    regulation_system_mapping,
-    bypass_position_mapping,
-    AldesModbusResponse,
-)
+from ha_aldes.modbus.model import AldesModbusResponse
 
 
-def get_client(port: str = "5020", framer=Framer.SOCKET):
+def get_client(port: str = "5020", framer: Framer = Framer.SOCKET) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         port,
         framer=framer,
@@ -24,7 +17,7 @@ def get_client(port: str = "5020", framer=Framer.SOCKET):
     )
 
 
-def poll_values(client: ModbusClient):
+def poll_values(client: ModbusClient) -> AldesModbusResponse:
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
         client.read_holding_registers(1, 12, 2).registers,
         byteorder=Endian.BIG,
@@ -42,7 +35,7 @@ def poll_values(client: ModbusClient):
     )
 
     return AldesModbusResponse(
-        *{
+        **{
             k: v
             for k, v in [
                 ("id", decoder_1.decode_32bit_uint()),  # 1-2
@@ -51,17 +44,17 @@ def poll_values(client: ModbusClient):
                 ("sw_version", decoder_1.decode_16bit_uint()),  # 12
                 (
                     "regulation_mode",
-                    regulation_mode_mapping[decoder_2.decode_16bit_uint()],
+                    decoder_2.decode_16bit_uint(),
                 ),  # 256
-                ("fan_mode", fan_mode_mapping[decoder_2.decode_16bit_uint()]),  # 257
+                ("fan_mode", decoder_2.decode_16bit_uint()),  # 257
                 ("night_cooling", decoder_2.decode_16bit_int()),  # 258
                 (
                     "bypass_exchanger",
-                    bypass_exchanger_mapping[decoder_2.decode_16bit_uint()],
+                    decoder_2.decode_16bit_uint(),
                 ),  # 259
                 (
                     "regulation_system",
-                    regulation_system_mapping[decoder_2.decode_16bit_uint()],
+                    decoder_2.decode_16bit_uint(),
                 ),  # 260
                 (None, decoder_2.skip_bytes(3)),  # 261-263
                 ("holiday_time", decoder_2.decode_16bit_int()),  # 264
@@ -95,7 +88,7 @@ def poll_values(client: ModbusClient):
                 ("filter_condition_time", decoder_3.decode_16bit_uint()),  # 347
                 (
                     "bypass_position",
-                    bypass_position_mapping[decoder_3.decode_16bit_uint()],
+                    decoder_3.decode_16bit_uint(),
                 ),  # 348
                 ("bypass_consumption", decoder_3.decode_16bit_uint()),  # 349
                 (

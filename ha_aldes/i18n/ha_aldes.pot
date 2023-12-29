@@ -1,166 +1,164 @@
-#: ha_aldes/ha/models.py:11
+#: ha_aldes/ha/devices.py:14
+msgid "Ventilation"
+msgstr ""
+
+#: ha_aldes/ha/models.py:40
 msgid "regulation_mode"
 msgstr ""
 
-#: ha_aldes/ha/models.py:13 ha_aldes/ha/models.py:19
-#: ha_aldes/modbus/model.py:18 ha_aldes/modbus/model.py:29
-msgid "Auto"
-msgstr ""
-
-#: ha_aldes/ha/models.py:13 ha_aldes/modbus/model.py:18
-msgid "Hygro"
-msgstr ""
-
-#: ha_aldes/ha/models.py:13 ha_aldes/modbus/model.py:18
-msgid "Constant Speed"
-msgstr ""
-
-#: ha_aldes/ha/models.py:17
+#: ha_aldes/ha/models.py:46
 msgid "Bypass Exchanger Management"
 msgstr ""
 
-#: ha_aldes/ha/models.py:19 ha_aldes/modbus/model.py:28
-msgid "Off"
-msgstr ""
-
-#: ha_aldes/ha/models.py:19 ha_aldes/modbus/model.py:30
-msgid "Winter optimisation"
-msgstr ""
-
-#: ha_aldes/ha/models.py:19 ha_aldes/modbus/model.py:31
-msgid "Summer optimisation"
-msgstr ""
-
-#: ha_aldes/ha/models.py:19 ha_aldes/ha/models.py:32
-#: ha_aldes/modbus/model.py:32 ha_aldes/modbus/model.py:44
-msgid "Open"
-msgstr ""
-
-#: ha_aldes/ha/models.py:23
+#: ha_aldes/ha/models.py:52
 msgid "Regulation system"
 msgstr ""
 
-#: ha_aldes/ha/models.py:25 ha_aldes/modbus/model.py:36
-msgid "Separated Speeds"
-msgstr ""
-
-#: ha_aldes/ha/models.py:25 ha_aldes/modbus/model.py:37
-msgid "Separated Airflows"
-msgstr ""
-
-#: ha_aldes/ha/models.py:25 ha_aldes/modbus/model.py:38
-msgid "Separated Pressures"
-msgstr ""
-
-#: ha_aldes/ha/models.py:25 ha_aldes/modbus/model.py:39
-msgid "Adjusted Pressure"
-msgstr ""
-
-#: ha_aldes/ha/models.py:29
+#: ha_aldes/ha/models.py:58
 msgid "Bypass Position"
 msgstr ""
 
-#: ha_aldes/ha/models.py:32 ha_aldes/modbus/model.py:43
-msgid "Close"
-msgstr ""
-
-#: ha_aldes/ha/models.py:32 ha_aldes/modbus/model.py:45
-msgid "Closing"
-msgstr ""
-
-#: ha_aldes/ha/models.py:32 ha_aldes/modbus/model.py:46
-msgid "Opening"
-msgstr ""
-
-#: ha_aldes/ha/models.py:32
-msgid "Short circuit"
-msgstr ""
-
-#: ha_aldes/ha/models.py:32 ha_aldes/modbus/model.py:48
-msgid "Open circuit"
-msgstr ""
-
-#: ha_aldes/ha/models.py:33 ha_aldes/modbus/model.py:49
-msgid "Under supply"
-msgstr ""
-
-#: ha_aldes/ha/models.py:39
+#: ha_aldes/ha/models.py:67
 msgid "outdoor_air_temperature"
 msgstr ""
 
-#: ha_aldes/ha/models.py:45
+#: ha_aldes/ha/models.py:73
 msgid "indoor_air_temperature"
 msgstr ""
 
-#: ha_aldes/ha/models.py:51
+#: ha_aldes/ha/models.py:79
 msgid "supply_voltage"
 msgstr ""
 
-#: ha_aldes/ha/models.py:57
+#: ha_aldes/ha/models.py:85
 msgid "extract_airflow"
 msgstr ""
 
-#: ha_aldes/ha/models.py:63
+#: ha_aldes/ha/models.py:91
 msgid "supply_airflow"
 msgstr ""
 
-#: ha_aldes/ha/models.py:69
+#: ha_aldes/ha/models.py:97
 msgid "extract_pressure"
 msgstr ""
 
-#: ha_aldes/ha/models.py:75
+#: ha_aldes/ha/models.py:103
 msgid "supply_pressure"
 msgstr ""
 
-#: ha_aldes/ha/models.py:81
+#: ha_aldes/ha/models.py:109
 msgid "extract_speed"
 msgstr ""
 
-#: ha_aldes/ha/models.py:87
+#: ha_aldes/ha/models.py:115
 msgid "supply_speed"
 msgstr ""
 
-#: ha_aldes/ha/models.py:93
+#: ha_aldes/ha/models.py:121
 msgid "extract_supply_ratio"
 msgstr ""
 
-#: ha_aldes/ha/models.py:99
+#: ha_aldes/ha/models.py:127
 msgid "temperature_summer_comfort"
 msgstr ""
 
-#: ha_aldes/ha/models.py:105
+#: ha_aldes/ha/models.py:133
 msgid "holiday_time"
 msgstr ""
 
-#: ha_aldes/ha/models.py:111
+#: ha_aldes/ha/models.py:139
 msgid "kitchen_time"
 msgstr ""
 
-#: ha_aldes/ha/models.py:117
+#: ha_aldes/ha/models.py:145
 msgid "boost_time"
 msgstr ""
 
-#: ha_aldes/ha/models.py:123
+#: ha_aldes/ha/models.py:151
 msgid "error_code"
 msgstr ""
 
-#: ha_aldes/ha/models.py:129
+#: ha_aldes/ha/models.py:157
 msgid "error_code_2"
 msgstr ""
 
-#: ha_aldes/modbus/model.py:21
+#: ha_aldes/modbus/model.py:45 ha_aldes/modbus/model.py:56
+msgid "Auto"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:45
+msgid "Hygro"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:45
+msgid "Constant Speed"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:48
 msgid "Holidays"
 msgstr ""
 
-#: ha_aldes/modbus/model.py:22
+#: ha_aldes/modbus/model.py:49
 msgid "Standard"
 msgstr ""
 
-#: ha_aldes/modbus/model.py:23
+#: ha_aldes/modbus/model.py:50
 msgid "Kitchen High Speed"
 msgstr ""
 
-#: ha_aldes/modbus/model.py:24
+#: ha_aldes/modbus/model.py:51
 msgid "Guests"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:55
+msgid "Off"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:57
+msgid "Winter optimisation"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:58
+msgid "Summer optimisation"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:59 ha_aldes/modbus/model.py:71
+msgid "Open"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:63
+msgid "Separated Speeds"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:64
+msgid "Separated Airflows"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:65
+msgid "Separated Pressures"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:66
+msgid "Adjusted Pressure"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:70
+msgid "Close"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:72
+msgid "Closing"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:73
+msgid "Opening"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:75
+msgid "Open circuit"
+msgstr ""
+
+#: ha_aldes/modbus/model.py:76
+msgid "Under supply"
 msgstr ""
 

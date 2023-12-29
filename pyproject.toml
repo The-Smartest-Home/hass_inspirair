@@ -10,6 +10,8 @@ packages = [{include = "ha_aldes"}]
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.12"
 pymodbus = {version = "^3.6.2", extras = ["serial"]}
+paho-mqtt = "^1.6.1"
+pydantic = "^2.5.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -20,3 +22,27 @@ babel = "^2.14.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = [
+  "pydantic.mypy"
+]
+
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+disallow_untyped_defs = true
+
+
+[tool.ruff]
+# Never enforce `E501` (line length violations), as this is handled by black
+ignore = ["E501"]
+line-length = 100 # sync with black
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+#init_typed = true
+warn_required_dynamic_aliases = true
