@@ -1,6 +1,6 @@
 import os
 import socket
-from typing import Generator, Union
+from typing import Any, Generator, Union
 
 from ha_aldes.ha.model import (
     ClimateConfig,
@@ -88,7 +88,7 @@ def create_select(
 
 
 def create_sensor(
-    device_info: DeviceInfo, topics: Topics, sensor: SensorWithUnit
+    device_info: DeviceInfo, topics: Topics, sensor: SensorWithUnit[Any]
 ) -> SensorConfig:
     return SensorConfig(
         name=sensor.name,

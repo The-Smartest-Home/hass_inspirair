@@ -17,19 +17,24 @@ def get_client(port: str = "5020", framer: Framer = Framer.SOCKET) -> ModbusClie
     )
 
 
+WORD_SIZE = 2
+
+
 def poll_values(client: ModbusClient) -> AldesModbusResponse:
+    # ModbusIOException
+    # isError()
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
         client.read_holding_registers(1, 12, 2).registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
     decoder_2 = BinaryPayloadDecoder.fromRegisters(
-        client.read_holding_registers(256, 44, 2).registers,
+        client.read_holding_registers(256, 30, 2).registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
     decoder_3 = BinaryPayloadDecoder.fromRegisters(
-        client.read_holding_registers(337, 63, 2).registers,
+        client.read_holding_registers(337, 56, 2).registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
@@ -40,7 +45,7 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
             for k, v in [
                 ("id", str(decoder_1.decode_32bit_uint())),  # 1-2
                 ("serial_id", str(decoder_1.decode_64bit_uint())),  # 3-6;
-                (None, decoder_1.skip_bytes(5)),  # 7-11
+                (None, decoder_1.skip_bytes(5 * WORD_SIZE)),  # 7-11
                 ("sw_version", str(decoder_1.decode_16bit_uint())),  # 12
                 (
                     "regulation_mode",
@@ -56,14 +61,14 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
                     "regulation_system",
                     decoder_2.decode_16bit_uint(),
                 ),  # 260
-                (None, decoder_2.skip_bytes(3)),  # 261-263
+                (None, decoder_2.skip_bytes(3 * WORD_SIZE)),  # 261-263
                 ("holiday_time", decoder_2.decode_16bit_int()),  # 264
                 ("kitchen_time", decoder_2.decode_16bit_int()),  # 265
                 ("boost_time", decoder_2.decode_16bit_int()),  # 266
                 ("filter_time", decoder_2.decode_16bit_int()),  # 267
                 ("aux_time_1", decoder_2.decode_16bit_int()),  # 268 TODO validate value
                 ("aux_time_2", decoder_2.decode_16bit_int()),  # 269 TODO validate value
-                (None, decoder_2.skip_bytes(2)),  # 270-271
+                (None, decoder_2.skip_bytes(2 * WORD_SIZE)),  # 270-271
                 ("extract_airflow", decoder_2.decode_16bit_int()),  # 272
                 ("supply_airflow", decoder_2.decode_16bit_int()),  # 273
                 ("extract_pressure", decoder_2.decode_16bit_int()),  # 274
@@ -71,8 +76,9 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
                 ("extract_speed", decoder_2.decode_16bit_int()),  # 276
                 ("supply_speed", decoder_2.decode_16bit_int()),  # 277
                 ("extract_supply_ratio", decoder_2.decode_16bit_int()),  # 278
-                (None, decoder_2.skip_bytes(3)),  # 279-281
+                (None, decoder_2.skip_bytes(3 * WORD_SIZE)),  # 279-281
                 ("temperature_summer_comfort", decoder_2.decode_16bit_int()),  # 282
+                (None, decoder_2.skip_bytes(1 * WORD_SIZE)),  # 283
                 ("u1_value", decoder_2.decode_16bit_int()),  # 284
                 ("u2_value", decoder_2.decode_16bit_int()),  # 285
                 ("supply_voltage", decoder_3.decode_16bit_uint()),  # 337
@@ -93,12 +99,15 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
                 ("bypass_consumption", decoder_3.decode_16bit_uint()),  # 349
                 (
                     "outdoor_air_temperature",
-                    decoder_3.decode_16bit_uint() * 0.01,
+                    round(decoder_3.decode_16bit_uint() * 0.01, 2),
                 ),  # 350
-                ("indoor_air_temperature", decoder_3.decode_16bit_uint() * 0.01),  # 351
-                (None, decoder_3.skip_bytes(32)),  # 352-383
+                (
+                    "indoor_air_temperature",
+                    round(decoder_3.decode_16bit_uint() * 0.01, 2),
+                ),  # 351
+                (None, decoder_3.skip_bytes(32 * WORD_SIZE)),  # 352-383
                 ("error_code", decoder_3.decode_16bit_uint()),  # 384
-                (None, decoder_3.skip_bytes(7)),  # 385-391
+                (None, decoder_3.skip_bytes(7 * WORD_SIZE)),  # 385-391
                 ("error_code_2", decoder_3.decode_16bit_uint()),  # 392
             ]
             if k is not None

@@ -98,7 +98,7 @@ bypass_position_mapping = {
     1: _("Open"),
     2: _("Closing"),
     3: _("Opening"),
-    4: "Short circuit",
+    4: _("Short circuit"),
     5: _("Open circuit"),
     6: _("Under supply"),
 }

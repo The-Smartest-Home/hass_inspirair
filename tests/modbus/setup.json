@@ -1,0 +1,113 @@
+{
+  "server_list": {
+    "server": {
+      "comm": "tcp",
+      "host": "0.0.0.0",
+      "port": 5020,
+      "ignore_missing_slaves": false,
+      "framer": "socket",
+      "identity": {
+        "VendorName": "pymodbus",
+        "ProductCode": "PM",
+        "VendorUrl": "https://github.com/pymodbus-dev/pymodbus/",
+        "ProductName": "pymodbus Server",
+        "ModelName": "pymodbus Server",
+        "MajorMinorRevision": "3.1.0"
+      }
+    }
+  },
+  "device_list": {
+    "device": {
+      "setup": {
+        "co size": 63000,
+        "di size": 63000,
+        "hr size": 63000,
+        "ir size": 63000,
+        "shared blocks": true,
+        "type exception": true,
+        "defaults": {
+          "value": {
+            "bits": 0,
+            "uint16": 0,
+            "uint32": 0,
+            "float32": 0.0,
+            "string": " "
+          },
+          "action": {
+            "bits": null,
+            "uint16": "increment",
+            "uint32": "increment",
+            "float32": "increment",
+            "string": null
+          }
+        }
+      },
+      "invalid": [999],
+      "write": [],
+      "bits": [],
+      "uint16": [
+        { "addr": 12, "value": 123, "action": null },
+        { "addr": 256, "value": 0, "action": null },
+        { "addr": 257, "value": 1, "action": null },
+        { "addr": 258, "value": 1, "action": null },
+        { "addr": 259, "value": 2, "action": null },
+        { "addr": 260, "value": 3, "action": null },
+
+        { "addr": 264, "value": 6, "action": null },
+        { "addr": 265, "value": 7, "action": null },
+        { "addr": 266, "value": 8, "action": null },
+        { "addr": 267, "value": 9, "action": null },
+        { "addr": 268, "value": 10, "action": null },
+        { "addr": 269, "value": 11, "action": null },
+
+        { "addr": 272, "value": 12, "action": null },
+        { "addr": 273, "value": 13, "action": null },
+        { "addr": 274, "value": 14, "action": null },
+        { "addr": 275, "value": 15, "action": null },
+        { "addr": 276, "value": 16, "action": null },
+        { "addr": 277, "value": 17, "action": null },
+        { "addr": 278, "value": 18, "action": null },
+
+        { "addr": 282, "value": 19, "action": null },
+        { "addr": 284, "value": 20, "action": null },
+        { "addr": 285, "value": 21, "action": null },
+
+        { "addr": 337, "value": 22, "action": null },
+        { "addr": 338, "value": 23, "action": null },
+        { "addr": 339, "value": 24, "action": null },
+        { "addr": 340, "value": 25, "action": null },
+        { "addr": 341, "value": 26, "action": null },
+        { "addr": 342, "value": 27, "action": null },
+        { "addr": 343, "value": 28, "action": null },
+        { "addr": 344, "value": 29, "action": null },
+        { "addr": 345, "value": 30, "action": null },
+        { "addr": 346, "value": 31, "action": null },
+        { "addr": 347, "value": 32, "action": null },
+        { "addr": 348, "value": 4, "action": null },
+        { "addr": 349, "value": 34, "action": null },
+        { "addr": 350, "value": 35, "action": null },
+        { "addr": 351, "value": 36, "action": null },
+
+        { "addr": 384, "value": 37, "action": null },
+        { "addr": 392, "value": 39, "action": null }
+      ],
+      "uint32": [
+        { "addr": [1, 2], "value": 123456, "action": null },
+        { "addr": [3, 4], "value": 287, "action": null },
+        { "addr": [5, 6], "value": 1912277059, "action": null }
+      ],
+
+      "float32": [],
+      "string": [],
+      "repeat": [
+        { "addr": [256, 256], "to": [7, 11] },
+        { "addr": [256, 256], "to": [261, 263] },
+        { "addr": [256, 256], "to": [270, 271] },
+        { "addr": [256, 256], "to": [279, 281] },
+        { "addr": [256, 256], "to": [283, 283] },
+        { "addr": [256, 256], "to": [352, 383] },
+        { "addr": [256, 256], "to": [385, 391] }
+      ]
+    }
+  }
+}

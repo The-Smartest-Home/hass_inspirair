@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  modbus:
+    build:
+      dockerfile_inline: |
+        FROM python:3.10
+        RUN pip install pymodbus aiohttp
+        COPY tests/modbus/setup.json setup.json
+        CMD pymodbus.simulator --json_file setup.json --log debug
+    ports:
+      - "8081:8081"
+      - "5020:5020"
+
+  mqtt:
+    build:
+      dockerfile_inline: |
+        FROM eclipse-mosquitto
+        RUN echo -e "listener 1883\nallow_anonymous true\n" > /mosquitto/config/mosquitto.conf
+
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  home-assistant:
+    image: homeassistant/home-assistant
+    stop_grace_period: 5m
+    ports:
+      - "8123:8123"
+    volumes:
+      - config:/config
+
+volumes:
+  config: {}
