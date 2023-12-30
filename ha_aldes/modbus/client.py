@@ -1,7 +1,9 @@
 import pymodbus.client as ModbusClient
 from pymodbus import Framer
 from pymodbus.constants import Endian
+from pymodbus.exceptions import ModbusIOException
 from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.pdu import ModbusResponse
 
 from ha_aldes.modbus.model import AldesModbusResponse
 
@@ -21,20 +23,31 @@ WORD_SIZE = 2
 
 
 def poll_values(client: ModbusClient) -> AldesModbusResponse:
-    # ModbusIOException
-    # isError()
+    try:
+        request1: ModbusResponse = client.read_holding_registers(1, 12, 2)
+        if request1.isError():
+            raise RuntimeError("Register 1-12 could not be read.")
+        request2 = client.read_holding_registers(256, 30, 2)
+        if request2.isError():
+            raise RuntimeError("Register 256-286 could not be read.")
+        request3 = client.read_holding_registers(337, 56, 2)
+        if request3.isError():
+            raise RuntimeError("Register 337-392 could not be read.")
+    except ModbusIOException as e:
+        raise RuntimeError from e
+
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
-        client.read_holding_registers(1, 12, 2).registers,
+        request1.registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
     decoder_2 = BinaryPayloadDecoder.fromRegisters(
-        client.read_holding_registers(256, 30, 2).registers,
+        request2.registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
     decoder_3 = BinaryPayloadDecoder.fromRegisters(
-        client.read_holding_registers(337, 56, 2).registers,
+        request3.registers,
         byteorder=Endian.BIG,
         wordorder=Endian.BIG,
     )
