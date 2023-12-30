@@ -1,5 +1,9 @@
+import asyncio
+from typing import Awaitable, Callable
+
 import pymodbus.client as ModbusClient
 from pymodbus import Framer
+from pymodbus.client import AsyncModbusTcpClient
 from pymodbus.constants import Endian
 from pymodbus.exceptions import ModbusIOException
 from pymodbus.payload import BinaryPayloadDecoder
@@ -22,20 +26,19 @@ def get_client(port: str = "5020", framer: Framer = Framer.SOCKET) -> ModbusClie
 WORD_SIZE = 2
 
 
-def poll_values(client: ModbusClient) -> AldesModbusResponse:
+async def poll_values(client: ModbusClient) -> AldesModbusResponse:
     try:
-        request1: ModbusResponse = client.read_holding_registers(1, 12, 2)
+        request1: ModbusResponse = await client.read_holding_registers(1, 12, 2)
         if request1.isError():
             raise RuntimeError("Register 1-12 could not be read.")
-        request2 = client.read_holding_registers(256, 30, 2)
+        request2 = await client.read_holding_registers(256, 30, 2)
         if request2.isError():
             raise RuntimeError("Register 256-286 could not be read.")
-        request3 = client.read_holding_registers(337, 56, 2)
+        request3 = await client.read_holding_registers(337, 56, 2)
         if request3.isError():
             raise RuntimeError("Register 337-392 could not be read.")
     except ModbusIOException as e:
         raise RuntimeError from e
-
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
         request1.registers,
         byteorder=Endian.BIG,
@@ -126,3 +129,18 @@ def poll_values(client: ModbusClient) -> AldesModbusResponse:
             if k is not None
         }
     )
+
+
+async def get_async_client() -> ModbusClient:
+    return AsyncModbusTcpClient("localhost", port=5020)
+
+
+# TODO Configurable interval
+async def modbus_polling_loop(
+    callback: Callable[[str], Awaitable[None]], interval: int = 30
+) -> None:
+    while True:
+        async with await get_async_client() as _client:
+            response = await poll_values(_client)
+            await callback(response.model_dump_json())
+            await asyncio.sleep(interval)

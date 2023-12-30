@@ -9,13 +9,14 @@ from ha_aldes.modbus.client import poll_values
 
 
 class MockClient(ModbusClientMixin):
-    def execute(self, request: ModbusRequest) -> ModbusRequest:
+    async def execute(self, request: ModbusRequest) -> ModbusRequest:
         request.registers = [1] * 100
+        request.isError = lambda: False
         return request
 
 
-class ModbusPollTest(unittest.TestCase):
-    def test_poll(self) -> None:
+class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
+    async def test_poll(self) -> None:
         client = MockClient()
         expected_json = {
             "id": "65537",
@@ -344,13 +345,12 @@ class ModbusPollTest(unittest.TestCase):
             },
         }
 
-        poll = poll_values(client)
-        self.maxDiff = None
+        poll = await poll_values(client)
         self.assertDictEqual(poll.model_dump(), expected)
         self.assertDictEqual(poll.model_dump(mode="json"), expected_json)
 
     @pytest.mark.skip
-    def test_tcp(self) -> None:
+    async def test_tcp(self) -> None:
         expected = {
             "id": "123456",
             "serial_id": "1234567891011",
@@ -395,6 +395,7 @@ class ModbusPollTest(unittest.TestCase):
             "error_code_2": 39,
         }
 
-        client = ModbusClient.ModbusTcpClient("localhost", port=5020)
-        poll = poll_values(client)
+        client = ModbusClient.AsyncModbusTcpClient("localhost", port=5020)
+        await client.connect()
+        poll = await poll_values(client)
         self.assertDictEqual(poll.model_dump(mode="json"), expected)
