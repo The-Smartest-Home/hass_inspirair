@@ -1,16 +1,24 @@
 import asyncio
-from asyncio import AbstractEventLoop
+import logging
+import sys
 
-from ha_aldes.modbus.client import modbus_polling_loop
-from ha_aldes.mqtt import mqtt_action_loop, publish
-
-
-async def main(event_loop: AbstractEventLoop) -> None:
-    modbus_task = event_loop.create_task(modbus_polling_loop(publish))
-    await mqtt_action_loop()
-    await modbus_task
+from ha_aldes.i18n import APP
+from ha_aldes.main import main_loop
 
 
+def _init_logger() -> None:
+    logger = logging.getLogger(APP)
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s - %(name)s - (%(filename)s:%(lineno)d) - %(levelname)s - %(message)s"
+        )
+    )
+    logger.addHandler(handler)
+
+
+_init_logger()
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(loop))
+loop.run_until_complete(main_loop(loop))
 loop.close()

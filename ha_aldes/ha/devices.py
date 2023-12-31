@@ -1,51 +1,22 @@
-import os
-import socket
 from typing import Any, Generator, Union
 
+from ha_aldes.config import DEFAULT_CONFIG, Config
 from ha_aldes.ha.model import (
     ClimateConfig,
-    DefaultConfig,
     Device,
     DeviceInfo,
     SelectConfig,
     SensorConfig,
-    Topics,
 )
-from ha_aldes.i18n import _
 from ha_aldes.modbus.model import AldesModbusResponse, Selection, SensorWithUnit
 
-DEFAULT_CONFIG = DefaultConfig(
-    **{
-        "manufacturer": "Aldes",
-        "model": "InspirAIR Home SC 370",  # TODO might be something else
-        "discovery_prefix": os.getenv("HA_ALDES_MQTT_PREFIX", "homeassistant"),
-        "entity_name": _("Ventilation"),
-    }
-)
 
-
-def get_ip() -> str:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.settimeout(0)
-    try:
-        # doesn't even have to be reachable
-        s.connect(("127.0.0.1", 1))
-        return s.getsockname()[0]
-    except Exception:
-        return "127.0.0.1"
-    finally:
-        s.close()
-
-
-print(get_ip())
-
-
-def create_device(modbus_data: AldesModbusResponse) -> tuple[DeviceInfo, Topics]:
+def create_device(modbus_data: AldesModbusResponse) -> DeviceInfo:
     device_info = DeviceInfo(
         enabled_by_default=True,
         device=Device(
             **{
-                "configuration_url": f"http://{get_ip()}",
+                "configuration_url": f"http://{DEFAULT_CONFIG.host}",
                 "connections": ['["modbus", "2;115200;1E1"]'],
                 "manufacturer": DEFAULT_CONFIG.manufacturer,
                 "identifiers": modbus_data.serial_id.value,
@@ -58,76 +29,98 @@ def create_device(modbus_data: AldesModbusResponse) -> tuple[DeviceInfo, Topics]
         ),
     )
 
-    default_topic = [
-        DEFAULT_CONFIG.discovery_prefix,
-        "ventilation",
-        modbus_data.serial_id.value,
-    ]
-
-    topics = Topics(
-        state="/".join([*default_topic, "state"]),
-        fan_mode="/".join([*default_topic, "state", modbus_data.fan_mode.id, "set"]),
-    )
-
-    return device_info, topics
+    return device_info
 
 
-def create_select(
-    device_info: DeviceInfo, topics: Topics, select: Selection
-) -> SelectConfig:
+def create_select(device_info: DeviceInfo, select: Selection) -> SelectConfig:
+    config = Config()
     return SelectConfig(
         name=select.name,
         unique_id="_".join([device_info.device.identifiers, select.id]),
-        state_topic=topics.state,
-        command_topic="/".join([topics.state, select.id, "set"]),
+        state_topic=config.get_state_topic(device_info.device.identifiers),
+        command_topic="/".join(
+            [
+                config.get_base_topic(
+                    select.id, device_info.device.identifiers, "select"
+                ),
+                "set",
+            ]
+        ),
         options=select.options.values(),
         entity_category=select.category,
         optimistic=False,
         value_template="{{value_json.%s}}" % select.id,
+        device=device_info.device,
+        config_topic=config.get_base_topic(
+            select.id, device_info.device.identifiers, "select"
+        ),
     )
 
 
-def create_sensor(
-    device_info: DeviceInfo, topics: Topics, sensor: SensorWithUnit[Any]
-) -> SensorConfig:
+def create_sensor(device_info: DeviceInfo, sensor: SensorWithUnit[Any]) -> SensorConfig:
+    config = Config()
     return SensorConfig(
         name=sensor.name,
         unique_id="_".join([device_info.device.identifiers, sensor.id]),
-        state_topic=topics.state,
+        state_topic=config.get_state_topic(device_info.device.identifiers),
         unit_of_measurement=sensor.unit,
         entity_category=sensor.category,
         value_template="{{value_json.%s}}" % sensor.id,
+        device=device_info.device,
+        config_topic=config.get_base_topic(
+            sensor.id, device_info.device.identifiers, "sensor"
+        ),
     )
 
 
 def create_climate(
-    device_info: DeviceInfo, topics: Topics, modbus_data: AldesModbusResponse
+    device_info: DeviceInfo, modbus_data: AldesModbusResponse
 ) -> ClimateConfig:
+    config = Config()
+    state_topic = config.get_state_topic(device_info.device.identifiers)
+    power_topic = "/".join(
+        [
+            config.get_base_topic("power", device_info.device.identifiers, "climate"),
+            "set",
+        ]
+    )
+    fan_topic = "/".join(
+        [
+            config.get_base_topic(
+                modbus_data.fan_mode.id, device_info.device.identifiers, "climate"
+            ),
+            "set",
+        ]
+    )
     return ClimateConfig(
         name=device_info.device.name,
-        power_command_topic="/".join([topics.state, "power", "set"]),
-        mode_state_topic=topics.state,
+        power_command_topic=power_topic,
+        mode_state_topic=state_topic,
         unique_id="_".join([device_info.device.identifiers, "climate"]),
-        fan_mode_state_topic=topics.state,
-        fan_mode_command_topic=topics.fan_mode,
-        current_temperature_topic=topics.state,
+        fan_mode_state_topic=state_topic,
+        fan_mode_command_topic=fan_topic,
+        current_temperature_topic=state_topic,
         fan_mode_state_template="{{value_json.%s}}" % modbus_data.fan_mode.id,
         current_temperature_template="{{value_json.%s}}"
         % modbus_data.indoor_air_temperature.id,
-        json_attributes_topic=topics.state,
+        json_attributes_topic=state_topic,
+        device=device_info.device,
+        config_topic=config.get_base_topic(
+            "climate", device_info.device.identifiers, "climate"
+        ),
     )
 
 
 def create_all(
     modbus_data: AldesModbusResponse,
 ) -> Generator[Union[ClimateConfig, SelectConfig, SensorConfig], None, None]:
-    device, topics = create_device(modbus_data)
-    yield create_climate(device, topics, modbus_data)
+    device = create_device(modbus_data)
+    yield create_climate(device, modbus_data)
     for k, v in modbus_data.model_fields.items():
         if v.annotation is None:
             continue
         if issubclass(v.annotation, Selection):
-            yield create_select(device, topics, getattr(modbus_data, k))
+            yield create_select(device, getattr(modbus_data, k))
         if issubclass(v.annotation, SensorWithUnit):
-            yield create_sensor(device, topics, getattr(modbus_data, k))
+            yield create_sensor(device, getattr(modbus_data, k))
     return None

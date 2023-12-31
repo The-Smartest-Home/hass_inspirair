@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import Awaitable, Callable
 
 import pymodbus.client as ModbusClient
@@ -9,24 +10,26 @@ from pymodbus.exceptions import ModbusIOException
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.pdu import ModbusResponse
 
+from ha_aldes.config import DEFAULT_CONFIG, Config
 from ha_aldes.modbus.model import AldesModbusResponse
+from ha_aldes.mqtt.client import publish
+
+logger = logging.getLogger(__name__)
 
 
-def get_client(port: str = "5020", framer: Framer = Framer.SOCKET) -> ModbusClient:
-    return ModbusClient.AsyncModbusSerialClient(
-        port,
-        framer=framer,
-        baudrate=115200,
-        bytesize=8,
-        parity="E",
-        stopbits=1,
-    )
+def get_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
+    return ModbusClient.AsyncModbusSerialClient(framer=framer, **DEFAULT_CONFIG.modbus)
+
+
+async def get_async_client() -> ModbusClient:
+    return AsyncModbusTcpClient("localhost", port=5020)
 
 
 WORD_SIZE = 2
 
 
 async def poll_values(client: ModbusClient) -> AldesModbusResponse:
+    logger.debug("polling values...")
     try:
         request1: ModbusResponse = await client.read_holding_registers(1, 12, 2)
         if request1.isError():
@@ -55,6 +58,7 @@ async def poll_values(client: ModbusClient) -> AldesModbusResponse:
         wordorder=Endian.BIG,
     )
 
+    logger.debug("decoding values...")
     return AldesModbusResponse(
         **{
             k: v
@@ -131,16 +135,27 @@ async def poll_values(client: ModbusClient) -> AldesModbusResponse:
     )
 
 
-async def get_async_client() -> ModbusClient:
-    return AsyncModbusTcpClient("localhost", port=5020)
+async def poll_once() -> AldesModbusResponse:
+    async with await get_async_client() as _client:
+        return await poll_values(_client)
+
+
+async def poll_push(
+    callback: Callable[[str, str], Awaitable[None]] = publish
+) -> AldesModbusResponse:
+    config = Config()
+    async with await get_async_client() as _client:
+        response = await poll_values(_client)
+        topic = config.get_state_topic(response.serial_id.value)
+        await callback(topic, response.model_dump_json())
+        return response
 
 
 # TODO Configurable interval
 async def modbus_polling_loop(
-    callback: Callable[[str], Awaitable[None]], interval: int = 30
+    callback: Callable[[str, str], Awaitable[None]] = publish, interval: int = 30
 ) -> None:
+    logger.info("starting modbus loop")
     while True:
-        async with await get_async_client() as _client:
-            response = await poll_values(_client)
-            await callback(response.model_dump_json())
-            await asyncio.sleep(interval)
+        await poll_push(callback)
+        await asyncio.sleep(interval)

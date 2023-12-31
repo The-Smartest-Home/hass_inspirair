@@ -7,15 +7,14 @@ from ha_aldes.modbus.model import fan_mode_mapping
 
 Sensor = namedtuple("Sensor", "name, id, unit, category")
 
-Topics = namedtuple("Topics", "state, fan_mode")
 DefaultConfig = namedtuple(
     "DefaultConfig", "manufacturer, model, discovery_prefix, entity_name"
 )
 
 
-class Device(NamedTuple):
+class Device(BaseModel):
     configuration_url: str
-    connections: list[str]
+    # connections: list[str]
     identifiers: str
     manufacturer: str
     model: str
@@ -46,6 +45,8 @@ class ClimateConfig(BaseModel):
 
     mode_state_template: str = Field(default="fan_only")
     json_attributes_topic: str
+    device: Device
+    config_topic: str = Field(exclude=True)
 
 
 class SelectConfig(BaseModel):
@@ -57,6 +58,8 @@ class SelectConfig(BaseModel):
     entity_category: str
     optimistic: bool
     value_template: str
+    device: Device
+    config_topic: str = Field(exclude=True)
 
 
 class SensorConfig(BaseModel):
@@ -66,3 +69,5 @@ class SensorConfig(BaseModel):
     unit_of_measurement: Optional[str] = Field(default="")
     entity_category: str
     value_template: str
+    device: Device
+    config_topic: str = Field(exclude=True)
