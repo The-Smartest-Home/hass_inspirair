@@ -93,7 +93,7 @@ def create_climate(
         ]
     )
     return ClimateConfig(
-        name=device_info.device.name,
+        name=None,
         power_command_topic=power_topic,
         mode_state_topic=state_topic,
         unique_id="_".join([device_info.device.identifiers, "climate"]),

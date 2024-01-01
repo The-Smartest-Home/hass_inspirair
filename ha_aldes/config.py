@@ -24,11 +24,10 @@ class MQTTConfig(NamedTuple):
 
 
 class ModbusConfig(NamedTuple):
-    port: str = os.getenv("HA_ALDES_MODBUS_SERIAL_DEVICE", "/dev/ttyACM")
-    baudrate: int = 115200
-    bytesize: int = 8
-    parity: str = "E"
-    stopbits: int = 1
+    client: str = os.getenv(
+        "HA_ALDES_MODBUS_CLIENT", "ha_aldes.modbus.client.get_async_serial_client"
+    )
+    polling_intervall: int = int(os.getenv("HA_ALDES_MODBUS_POLLING_INTERVALL", "30"))
 
 
 class Config(NamedTuple):

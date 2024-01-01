@@ -8,7 +8,7 @@ from ha_aldes.main import main_loop
 
 def _init_logger() -> None:
     logger = logging.getLogger(APP)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(
         logging.Formatter(

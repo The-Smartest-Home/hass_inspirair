@@ -43,7 +43,7 @@
         }
       },
       "invalid": [999],
-      "write": [],
+      "write": [257],
       "bits": [],
       "uint16": [
         { "addr": 12, "value": 123, "action": null },
@@ -86,7 +86,7 @@
         { "addr": 348, "value": 4, "action": null },
         { "addr": 349, "value": 34, "action": null },
         { "addr": 350, "value": 35, "action": null },
-        { "addr": 351, "value": 36, "action": null },
+        { "addr": 351, "value": 36, "action": "increment" },
 
         { "addr": 384, "value": 37, "action": null },
         { "addr": 392, "value": 39, "action": null }

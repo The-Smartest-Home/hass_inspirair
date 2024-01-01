@@ -30,7 +30,7 @@ class DeviceInfo(NamedTuple):
 
 
 class ClimateConfig(BaseModel):
-    name: str
+    name: Optional[str]
     modes: list[str] = Field(default=["fan_only"])
     fan_modes: list[str] = Field(default=list(fan_mode_mapping.values()))
     power_command_topic: str

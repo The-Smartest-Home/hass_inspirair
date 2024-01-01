@@ -11,10 +11,9 @@ def get_client() -> Client:
     return Client(*DEFAULT_CONFIG.mqtt)
 
 
-async def _publish(topic: str, value: str) -> None:
-    async with get_client() as client:
+async def publish(topic: str, value: str, client: Client = None) -> None:
+    if client is None:
+        async with get_client() as _client:
+            await publish(topic, value, _client)
+    else:
         await client.publish(topic, value)
-
-
-async def publish(topic: str, value: str) -> None:
-    await _publish(topic, value)

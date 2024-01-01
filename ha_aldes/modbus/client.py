@@ -1,43 +1,81 @@
 import asyncio
+import importlib
 import logging
-from typing import Awaitable, Callable
+import os
+from typing import Awaitable, Callable, Optional
 
 import pymodbus.client as ModbusClient
+from aiomqtt import Client
 from pymodbus import Framer
 from pymodbus.client import AsyncModbusTcpClient
+from pymodbus.client.base import ModbusBaseClient
 from pymodbus.constants import Endian
 from pymodbus.exceptions import ModbusIOException
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.pdu import ModbusResponse
 
 from ha_aldes.config import DEFAULT_CONFIG, Config
-from ha_aldes.modbus.model import AldesModbusResponse
+from ha_aldes.modbus.model import AldesModbusResponse, fan_mode_mapping
 from ha_aldes.mqtt.client import publish
 
 logger = logging.getLogger(__name__)
 
 
-def get_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
-    return ModbusClient.AsyncModbusSerialClient(framer=framer, **DEFAULT_CONFIG.modbus)
+def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
+    return ModbusClient.AsyncModbusSerialClient(
+        framer=framer,
+        port=os.getenv("HA_ALDES_MODBUS_SERIAL_DEVICE", "/dev/ttyACM"),
+        baudrate=115200,
+        bytesize=8,
+        parity="E",
+        stopbits=1,
+    )
+
+
+def get_async_tcp_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
+    return AsyncModbusTcpClient("localhost", port=5020)
 
 
 async def get_async_client() -> ModbusClient:
-    return AsyncModbusTcpClient("localhost", port=5020)
+    try:
+        _module_name, _function = DEFAULT_CONFIG.modbus.client.rsplit(".", 1)
+        _module = importlib.import_module(_module_name)
+        _get_client = getattr(_module, _function)
+        return _get_client()
+    except ModuleNotFoundError as e:
+        logger.exception("Could create client", e)
+        logger.warning("Will use default serial client")
+    return get_async_serial_client()
 
 
 WORD_SIZE = 2
 
 
-async def poll_values(client: ModbusClient) -> AldesModbusResponse:
+async def change_fan_mode(mode: int, modbus_client: ModbusClient) -> bool:
+    if mode in fan_mode_mapping:
+        try:
+            logger.debug(f"writing to register= 257 value = {mode}")
+            request: ModbusResponse = await modbus_client.write_register(257, mode, 2)
+            if request.isError():
+                raise RuntimeError("Could not wirte to register 257")
+            return True
+        except ModbusIOException as e:
+            raise RuntimeError from e
+
+    logger.error(f"Tried to set unknown fan mode {mode}")
+    return False
+
+
+async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
     logger.debug("polling values...")
     try:
-        request1: ModbusResponse = await client.read_holding_registers(1, 12, 2)
+        request1: ModbusResponse = await modbus_client.read_holding_registers(1, 12, 2)
         if request1.isError():
             raise RuntimeError("Register 1-12 could not be read.")
-        request2 = await client.read_holding_registers(256, 30, 2)
+        request2 = await modbus_client.read_holding_registers(256, 30, 2)
         if request2.isError():
             raise RuntimeError("Register 256-286 could not be read.")
-        request3 = await client.read_holding_registers(337, 56, 2)
+        request3 = await modbus_client.read_holding_registers(337, 56, 2)
         if request3.isError():
             raise RuntimeError("Register 337-392 could not be read.")
     except ModbusIOException as e:
@@ -59,7 +97,8 @@ async def poll_values(client: ModbusClient) -> AldesModbusResponse:
     )
 
     logger.debug("decoding values...")
-    return AldesModbusResponse(
+
+    response = AldesModbusResponse(
         **{
             k: v
             for k, v in [
@@ -133,29 +172,29 @@ async def poll_values(client: ModbusClient) -> AldesModbusResponse:
             if k is not None
         }
     )
-
-
-async def poll_once() -> AldesModbusResponse:
-    async with await get_async_client() as _client:
-        return await poll_values(_client)
+    return response
 
 
 async def poll_push(
-    callback: Callable[[str, str], Awaitable[None]] = publish
+    modbus_client: ModbusBaseClient,
+    mqtt_client: Client,
+    callback: Callable[[str, str, Optional[Client]], Awaitable[None]] = publish,
 ) -> AldesModbusResponse:
     config = Config()
-    async with await get_async_client() as _client:
-        response = await poll_values(_client)
-        topic = config.get_state_topic(response.serial_id.value)
-        await callback(topic, response.model_dump_json())
-        return response
+    response = await poll_values(modbus_client)
+    topic = config.get_state_topic(response.serial_id.value)
+    await callback(topic, response.model_dump_json(), mqtt_client)
+    return response
 
 
 # TODO Configurable interval
 async def modbus_polling_loop(
-    callback: Callable[[str, str], Awaitable[None]] = publish, interval: int = 30
+    modbus_client: ModbusBaseClient,
+    mqtt_client: Client,
+    callback: Callable[[str, str, Optional[Client]], Awaitable[None]] = publish,
+    interval: int = DEFAULT_CONFIG.modbus.polling_intervall,
 ) -> None:
     logger.info("starting modbus loop")
     while True:
-        await poll_push(callback)
+        await poll_push(modbus_client, mqtt_client, callback)
         await asyncio.sleep(interval)
