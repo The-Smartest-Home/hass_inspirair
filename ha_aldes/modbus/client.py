@@ -1,7 +1,6 @@
 import asyncio
 import importlib
 import logging
-import os
 from typing import Awaitable, Callable, Optional
 
 import pymodbus.client as ModbusClient
@@ -15,6 +14,7 @@ from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.pdu import ModbusResponse
 
 from ha_aldes.config import DEFAULT_CONFIG, Config
+from ha_aldes.env_config import EnvConfig
 from ha_aldes.modbus.model import AldesModbusResponse, fan_mode_mapping
 from ha_aldes.mqtt.client import publish
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         framer=framer,
-        port=os.getenv("HA_ALDES_MODBUS_SERIAL_DEVICE", "/dev/ttyACM"),
+        port=EnvConfig.HA_ALDES_MODBUS_SERIAL_DEVICE.value,
         baudrate=115200,
         bytesize=8,
         parity="E",
@@ -33,7 +33,10 @@ def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
 
 
 def get_async_tcp_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
-    return AsyncModbusTcpClient("localhost", port=5020)
+    return AsyncModbusTcpClient(
+        host=EnvConfig.HA_ALDES_MODBUS_TCP_HOST.value,
+        port=EnvConfig.HA_ALDES_MODBUS_TCP_PORT.value,
+    )
 
 
 async def get_async_client() -> ModbusClient:

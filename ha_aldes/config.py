@@ -1,8 +1,9 @@
-import os
 import socket
 from typing import NamedTuple, Optional
 
 from ha_aldes.i18n import _
+
+from .env_config import EnvConfig
 
 
 def get_ip() -> str:
@@ -19,21 +20,19 @@ def get_ip() -> str:
 
 
 class MQTTConfig(NamedTuple):
-    hostname: str = os.getenv("HA_ALDES_MQTT_HOST", "localhost")
-    port: int = int(os.getenv("HA_ALDES_MQTT_PORT", "1883"))
+    hostname: str = EnvConfig.HA_ALDES_MQTT_HOST.value
+    port: int = EnvConfig.HA_ALDES_MQTT_PORT.value
 
 
 class ModbusConfig(NamedTuple):
-    client: str = os.getenv(
-        "HA_ALDES_MODBUS_CLIENT", "ha_aldes.modbus.client.get_async_serial_client"
-    )
-    polling_intervall: int = int(os.getenv("HA_ALDES_MODBUS_POLLING_INTERVALL", "30"))
+    client: str = EnvConfig.HA_ALDES_MODBUS_CLIENT.value
+    polling_intervall: int = EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL.value
 
 
 class Config(NamedTuple):
     manufacturer: str = "Aldes"
     model: str = "InspirAIR Home SC 370"  # TODO might be something else
-    discovery_prefix: str = os.getenv("HA_ALDES_MQTT_PREFIX", "homeassistant")
+    discovery_prefix: str = EnvConfig.HA_ALDES_MQTT_PREFIX.value
     ha_state_topic: str = "/".join([discovery_prefix, "status"])
     entity_name: str = _("Ventilation")
     host: str = get_ip()
