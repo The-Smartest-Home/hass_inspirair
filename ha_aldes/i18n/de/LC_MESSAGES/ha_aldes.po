@@ -158,7 +158,7 @@ msgstr "Abluft Druck"
 
 #: ha_aldes/modbus/model.py:146
 msgid "supply_pressure"
-msgstr "Zuluft Durchfluss"
+msgstr "Zuluft Druck"
 
 #: ha_aldes/modbus/model.py:147
 msgid "extract_speed"

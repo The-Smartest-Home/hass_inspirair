@@ -70,6 +70,7 @@ def create_sensor(device_info: DeviceInfo, sensor: SensorWithUnit[Any]) -> Senso
         config_topic=config.get_base_topic(
             sensor.id, device_info.device.identifiers, "sensor"
         ),
+        device_class=sensor.device_class,
     )
 
 

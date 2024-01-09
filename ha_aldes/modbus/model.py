@@ -1,4 +1,4 @@
-from typing import Any, Callable, Generic, TypeVar
+from typing import Any, Callable, Generic, Optional, TypeVar
 
 from pydantic import (
     BaseModel,
@@ -33,30 +33,37 @@ OptionsDict = Annotated[
 
 class SensorWithUnit(SensorBase[T], Generic[T]):
     unit: str = Field(default="")
+    device_class: Optional[str] = Field(default=None)
 
 
 class TemperaturSensor(SensorWithUnit[float]):
     unit: str = Field(default="°C")
+    device_class: str = "temperature"
 
 
 class VoltageSensor(SensorWithUnit[int]):
     unit: str = Field(default="V")
+    device_class: str = "voltage"
 
 
 class FlowSensor(SensorWithUnit[int]):
     unit: str = Field(default="m³/h")
+    device_class: Optional[str] = None
 
 
 class PressureSensor(SensorWithUnit[int]):
     unit: str = Field(default="Pa")
+    device_class: str = "atmospheric_pressure"
 
 
 class SpeedSensor(SensorWithUnit[int]):
     unit: str = Field(default="m/s")
+    device_class: str = "speed"
 
 
 class TimeSensor(SensorWithUnit[int]):
     unit: str = Field(default="min")
+    device_class: str = "duration"
 
 
 class Selection(SensorBase[int]):

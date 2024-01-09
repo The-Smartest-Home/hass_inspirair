@@ -71,3 +71,4 @@ class SensorConfig(BaseModel):
     value_template: str
     device: Device
     config_topic: str = Field(exclude=True)
+    device_class: Optional[str]
