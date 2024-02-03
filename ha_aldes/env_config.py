@@ -1,10 +1,8 @@
-import enum
 import os
-from types import DynamicClassAttribute
 from typing import Any
 
 
-class EnvConfig(enum.Enum):
+class EnvConfigMeta(type):
     LANGUAGE = "de"
     HA_ALDES_MQTT_HOST = "localhost"
     HA_ALDES_MQTT_PORT = 1883
@@ -16,11 +14,18 @@ class EnvConfig(enum.Enum):
     HA_ALDES_MODBUS_TCP_HOST = "localhost"
     HA_ALDES_MODBUS_TCP_PORT = 5020
 
-    @DynamicClassAttribute
-    def value(self) -> Any:
-        env_value = os.getenv(self.name)
-        if env_value is None:
-            return super().value
-        else:
-            value_type = type(super().value)
-            return value_type(env_value)
+    def __getattribute__(self, item: str) -> Any:
+        super_value = super().__getattribute__(item)
+        if not item.startswith("_"):
+            env_value = os.getenv(item)
+            if env_value is None:
+                return super_value
+            else:
+                value_type = type(super_value)
+                return value_type(env_value)
+
+        return super_value
+
+
+class EnvConfig(metaclass=EnvConfigMeta):
+    pass

@@ -20,19 +20,19 @@ def get_ip() -> str:
 
 
 class MQTTConfig(NamedTuple):
-    hostname: str = EnvConfig.HA_ALDES_MQTT_HOST.value
-    port: int = EnvConfig.HA_ALDES_MQTT_PORT.value
+    hostname: str = EnvConfig.HA_ALDES_MQTT_HOST
+    port: int = EnvConfig.HA_ALDES_MQTT_PORT
 
 
 class ModbusConfig(NamedTuple):
-    client: str = EnvConfig.HA_ALDES_MODBUS_CLIENT.value
-    polling_intervall: int = EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL.value
+    client: str = EnvConfig.HA_ALDES_MODBUS_CLIENT
+    polling_intervall: int = EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL
 
 
 class Config(NamedTuple):
     manufacturer: str = "Aldes"
     model: str = "InspirAIR Home SC 370"  # TODO might be something else
-    discovery_prefix: str = EnvConfig.HA_ALDES_MQTT_PREFIX.value
+    discovery_prefix: str = EnvConfig.HA_ALDES_MQTT_PREFIX
     ha_state_topic: str = "/".join([discovery_prefix, "status"])
     entity_name: str = _("Ventilation")
     host: str = get_ip()

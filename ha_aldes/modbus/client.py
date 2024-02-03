@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         framer=framer,
-        port=EnvConfig.HA_ALDES_MODBUS_SERIAL_DEVICE.value,
+        port=EnvConfig.HA_ALDES_MODBUS_SERIAL_DEVICE,
         baudrate=115200,
         bytesize=8,
         parity="E",
@@ -34,8 +34,8 @@ def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
 
 def get_async_tcp_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
     return AsyncModbusTcpClient(
-        host=EnvConfig.HA_ALDES_MODBUS_TCP_HOST.value,
-        port=EnvConfig.HA_ALDES_MODBUS_TCP_PORT.value,
+        EnvConfig.HA_ALDES_MODBUS_TCP_HOST,
+        port=EnvConfig.HA_ALDES_MODBUS_TCP_PORT,
     )
 
 
