@@ -47,6 +47,8 @@ class ClimateConfig(BaseModel):
     json_attributes_topic: str
     device: Device
     config_topic: str = Field(exclude=True)
+    object_id: str
+    expire_after: Optional[int]
 
 
 class SelectConfig(BaseModel):
@@ -60,6 +62,8 @@ class SelectConfig(BaseModel):
     value_template: str
     device: Device
     config_topic: str = Field(exclude=True)
+    object_id: str
+    expire_after: Optional[int]
 
 
 class SensorConfig(BaseModel):
@@ -72,3 +76,5 @@ class SensorConfig(BaseModel):
     device: Device
     config_topic: str = Field(exclude=True)
     device_class: Optional[str]
+    object_id: str
+    expire_after: Optional[int]

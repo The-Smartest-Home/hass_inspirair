@@ -29,15 +29,23 @@ class ModbusConfig(NamedTuple):
     polling_intervall: int = EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL
 
 
+BASE_NAME = "Ventilation"
+
+
 class Config(NamedTuple):
     manufacturer: str = "Aldes"
     model: str = "InspirAIR Home SC 370"  # TODO might be something else
     discovery_prefix: str = EnvConfig.HA_ALDES_MQTT_PREFIX
     ha_state_topic: str = "/".join([discovery_prefix, "status"])
-    entity_name: str = _("Ventilation")
+    entity_name: str = _(BASE_NAME)
     host: str = get_ip()
     mqtt: MQTTConfig = MQTTConfig()
     modbus: ModbusConfig = ModbusConfig()
+
+    def get_object_id(self, sensor_id: Optional[str] = None) -> str:
+        if sensor_id is not None:
+            return "_".join([BASE_NAME, sensor_id]).lower()
+        return BASE_NAME.lower()
 
     def get_base_topic(
         self, node_id: Optional[str], object_id: str, component: str

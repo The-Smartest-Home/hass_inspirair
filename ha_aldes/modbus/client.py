@@ -190,7 +190,6 @@ async def poll_push(
     return response
 
 
-# TODO Configurable interval
 async def modbus_polling_loop(
     modbus_client: ModbusBaseClient,
     mqtt_client: Client,
