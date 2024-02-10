@@ -5,7 +5,7 @@ import pytest
 from pymodbus.client.mixin import ModbusClientMixin
 from pymodbus.pdu import ModbusRequest
 
-from ha_aldes.modbus.client import poll_values
+from hass_inspirair.modbus.client import poll_values
 
 
 class MockClient(ModbusClientMixin):

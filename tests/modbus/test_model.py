@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from ha_aldes.ha.devices import create_all
-from ha_aldes.modbus.model import AldesModbusResponse, regulation_mode_mapping
+from hass_inspirair.ha.devices import create_all
+from hass_inspirair.modbus.model import AldesModbusResponse, regulation_mode_mapping
 
 raw_data = {
     **{k: 1 for k, v in AldesModbusResponse.model_fields.items()},

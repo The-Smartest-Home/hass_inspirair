@@ -3,7 +3,7 @@ from typing import NamedTuple, Optional
 
 from pydantic import BaseModel, Field
 
-from ha_aldes.modbus.model import fan_mode_mapping
+from hass_inspirair.modbus.model import fan_mode_mapping
 
 Sensor = namedtuple("Sensor", "name, id, unit, category")
 

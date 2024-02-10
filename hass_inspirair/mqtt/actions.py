@@ -3,11 +3,11 @@ import logging
 from aiomqtt import Client, Message
 from pymodbus.client.base import ModbusBaseClient
 
-from ha_aldes.config import Config
-from ha_aldes.ha.devices import create_all
-from ha_aldes.modbus.client import change_fan_mode, poll_push
-from ha_aldes.modbus.model import fan_mode_mapping
-from ha_aldes.mqtt.client import publish
+from hass_inspirair.config import Config
+from hass_inspirair.ha.devices import create_all
+from hass_inspirair.modbus.client import change_fan_mode, poll_push
+from hass_inspirair.modbus.model import fan_mode_mapping
+from hass_inspirair.mqtt.client import publish
 
 HA_IS_ONLINE = False
 

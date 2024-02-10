@@ -13,10 +13,10 @@ from pymodbus.exceptions import ModbusIOException
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.pdu import ModbusResponse
 
-from ha_aldes.config import DEFAULT_CONFIG, Config
-from ha_aldes.env_config import EnvConfig
-from ha_aldes.modbus.model import AldesModbusResponse, fan_mode_mapping
-from ha_aldes.mqtt.client import publish
+from hass_inspirair.config import DEFAULT_CONFIG, Config
+from hass_inspirair.env_config import EnvConfig
+from hass_inspirair.modbus.model import AldesModbusResponse, fan_mode_mapping
+from hass_inspirair.mqtt.client import publish
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         framer=framer,
-        port=EnvConfig.HA_ALDES_MODBUS_SERIAL_DEVICE,
+        port=EnvConfig.HI_MODBUS_SERIAL_DEVICE,
         baudrate=115200,
         bytesize=8,
         parity="E",
@@ -34,8 +34,8 @@ def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
 
 def get_async_tcp_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
     return AsyncModbusTcpClient(
-        EnvConfig.HA_ALDES_MODBUS_TCP_HOST,
-        port=EnvConfig.HA_ALDES_MODBUS_TCP_PORT,
+        EnvConfig.HI_MODBUS_TCP_HOST,
+        port=EnvConfig.HI_MODBUS_TCP_PORT,
     )
 
 

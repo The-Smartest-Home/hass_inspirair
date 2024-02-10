@@ -1,15 +1,15 @@
 from typing import Any, Generator, Union
 
-from ha_aldes.config import DEFAULT_CONFIG, Config
-from ha_aldes.env_config import EnvConfig
-from ha_aldes.ha.model import (
+from hass_inspirair.config import DEFAULT_CONFIG, Config
+from hass_inspirair.env_config import EnvConfig
+from hass_inspirair.ha.model import (
     ClimateConfig,
     Device,
     DeviceInfo,
     SelectConfig,
     SensorConfig,
 )
-from ha_aldes.modbus.model import AldesModbusResponse, Selection, SensorWithUnit
+from hass_inspirair.modbus.model import AldesModbusResponse, Selection, SensorWithUnit
 
 
 def create_device(modbus_data: AldesModbusResponse) -> DeviceInfo:
@@ -51,7 +51,7 @@ def create_select(device_info: DeviceInfo, select: Selection) -> SelectConfig:
         entity_category=select.category,
         optimistic=False,
         value_template="{{value_json.%s}}" % select.id,
-        expire_after=EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL * 2,
+        expire_after=EnvConfig.HI_MODBUS_POLLING_INTERVALL * 2,
         object_id=config.get_object_id(select.id),
         device=device_info.device,
         config_topic=config.get_base_topic(
@@ -75,7 +75,7 @@ def create_sensor(device_info: DeviceInfo, sensor: SensorWithUnit[Any]) -> Senso
         ),
         device_class=sensor.device_class,
         object_id=config.get_object_id(sensor.id),
-        expire_after=EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL * 2,
+        expire_after=EnvConfig.HI_MODBUS_POLLING_INTERVALL * 2,
     )
 
 
@@ -115,7 +115,7 @@ def create_climate(
             "climate", device_info.device.identifiers, "climate"
         ),
         object_id=config.get_object_id(),
-        expire_after=EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL * 2,
+        expire_after=EnvConfig.HI_MODBUS_POLLING_INTERVALL * 2,
     )
 
 

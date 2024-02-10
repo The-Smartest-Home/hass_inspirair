@@ -15,7 +15,7 @@ Currently, only the following was actually tested:
 
 ## Configuration
 
-See [env_config.py](./ha_aldes/env_config.py) for configuration options which can be set via environment variables.
+See [env_config.py](./hass_inspirair/env_config.py) for configuration options which can be set via environment variables.
 
 ## Simulator/Testing
 

@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "ha_aldes"
+name = "hass_inspirair"
 version = "0.0.1"
 description = ""
 authors = ["Kraus, Vadim <38394456+VadimKraus@users.noreply.github.com>"]
 license = "Apache 2.0"
 readme = "README.md"
-packages = [{include = "ha_aldes"}]
+packages = [{include = "hass_inspirair"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.12"

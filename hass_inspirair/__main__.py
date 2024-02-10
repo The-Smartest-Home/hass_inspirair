@@ -2,8 +2,8 @@ import asyncio
 import logging
 import sys
 
-from ha_aldes.i18n import APP
-from ha_aldes.main import main_loop
+from hass_inspirair.i18n import APP
+from hass_inspirair.main import main_loop
 
 
 def _init_logger() -> None:

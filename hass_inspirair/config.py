@@ -1,7 +1,7 @@
 import socket
 from typing import NamedTuple, Optional
 
-from ha_aldes.i18n import _
+from hass_inspirair.i18n import _
 
 from .env_config import EnvConfig
 
@@ -20,15 +20,15 @@ def get_ip() -> str:
 
 
 class MQTTConfig(NamedTuple):
-    hostname: str = EnvConfig.HA_ALDES_MQTT_HOST
-    port: int = EnvConfig.HA_ALDES_MQTT_PORT
-    username: str = EnvConfig.HA_ALDES_MQTT_USERNAME
-    password: str = EnvConfig.HA_ALDES_MQTT_PASSWORD
+    hostname: str = EnvConfig.HI_MQTT_HOST
+    port: int = EnvConfig.HI_MQTT_PORT
+    username: str = EnvConfig.HI_MQTT_USERNAME
+    password: str = EnvConfig.HI_MQTT_PASSWORD
 
 
 class ModbusConfig(NamedTuple):
-    client: str = EnvConfig.HA_ALDES_MODBUS_CLIENT
-    polling_intervall: int = EnvConfig.HA_ALDES_MODBUS_POLLING_INTERVALL
+    client: str = EnvConfig.HI_MODBUS_CLIENT
+    polling_intervall: int = EnvConfig.HI_MODBUS_POLLING_INTERVALL
 
 
 BASE_NAME = "Ventilation"
@@ -37,7 +37,7 @@ BASE_NAME = "Ventilation"
 class Config(NamedTuple):
     manufacturer: str = "Aldes"
     model: str = "InspirAIR Home SC 370"  # TODO might be something else
-    discovery_prefix: str = EnvConfig.HA_ALDES_MQTT_PREFIX
+    discovery_prefix: str = EnvConfig.HI_MQTT_PREFIX
     ha_state_topic: str = "/".join([discovery_prefix, "status"])
     entity_name: str = _(BASE_NAME)
     host: str = get_ip()

@@ -1,10 +1,10 @@
 import logging
 from asyncio import AbstractEventLoop
 
-from ha_aldes.config import DEFAULT_CONFIG
-from ha_aldes.modbus.client import get_async_client, modbus_polling_loop
-from ha_aldes.mqtt.actions import mqtt_action_loop, register
-from ha_aldes.mqtt.client import get_client as get_mqtt_client
+from hass_inspirair.config import DEFAULT_CONFIG
+from hass_inspirair.modbus.client import get_async_client, modbus_polling_loop
+from hass_inspirair.mqtt.actions import mqtt_action_loop, register
+from hass_inspirair.mqtt.client import get_client as get_mqtt_client
 
 logger = logging.getLogger(__name__)
 

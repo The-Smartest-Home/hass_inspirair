@@ -9,7 +9,7 @@ from pydantic import (
 )
 from typing_extensions import Annotated
 
-from ha_aldes.i18n import _
+from hass_inspirair.i18n import _
 
 T = TypeVar("T")
 

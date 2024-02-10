@@ -2,7 +2,7 @@ import logging
 
 from aiomqtt import Client
 
-from ha_aldes.config import DEFAULT_CONFIG
+from hass_inspirair.config import DEFAULT_CONFIG
 
 logger = logging.getLogger(__name__)
 
