@@ -126,6 +126,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Ferienmodus Zeit",
                 "id": "holiday_time",
                 "unit": "min",
+                "device_class": "duration",
             },
             "kitchen_time": {
                 "value": 1,
@@ -133,6 +134,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Kochenmodus Zeit",
                 "id": "kitchen_time",
                 "unit": "min",
+                "device_class": "duration",
             },
             "boost_time": {
                 "value": 1,
@@ -140,24 +142,31 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Boostmodus Zeit",
                 "id": "boost_time",
                 "unit": "min",
+                "device_class": "duration",
             },
             "filter_time": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Filter Zeit",
                 "id": "filter_time",
+                "device_class": "duration",
+                "unit": "min",
             },
             "aux_time_1": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Aux1 Zeit",
                 "id": "aux_time_1",
+                "unit": "min",
+                "device_class": "duration",
             },
             "aux_time_2": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Aux2 Zeit",
                 "id": "aux_time_2",
+                "unit": "min",
+                "device_class": "duration",
             },
             "extract_airflow": {
                 "value": 1,
@@ -165,6 +174,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Abluft Durchfluss",
                 "id": "extract_airflow",
                 "unit": "m³/h",
+                "device_class": None,
             },
             "supply_airflow": {
                 "value": 1,
@@ -172,6 +182,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Zuluft Durchfluss",
                 "id": "supply_airflow",
                 "unit": "m³/h",
+                "device_class": None,
             },
             "extract_pressure": {
                 "value": 1,
@@ -179,8 +190,10 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Abluft Druck",
                 "id": "extract_pressure",
                 "unit": "Pa",
+                "device_class": "atmospheric_pressure",
             },
             "supply_pressure": {
+                "device_class": "atmospheric_pressure",
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Zuluft Durchfluss",
@@ -192,6 +205,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "category": "diagnostic",
                 "name": "Abluft Geschwindigkeit",
                 "id": "extract_speed",
+                "device_class": "speed",
                 "unit": "m/s",
             },
             "supply_speed": {
@@ -199,6 +213,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "category": "diagnostic",
                 "name": "Zuluft Geschwindigkeit",
                 "id": "supply_speed",
+                "device_class": "speed",
                 "unit": "m/s",
             },
             "extract_supply_ratio": {
@@ -213,18 +228,23 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Sommer Komforttemperatur",
                 "id": "temperature_summer_comfort",
                 "unit": "°C",
+                "device_class": "temperature",
             },
             "u1_value": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "U1",
                 "id": "u1_value",
+                "device_class": "voltage",
+                "unit": "V",
             },
             "u2_value": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "U2",
                 "id": "u2_value",
+                "device_class": "voltage",
+                "unit": "V",
             },
             "supply_voltage": {
                 "value": 1,
@@ -232,12 +252,15 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Spannung",
                 "id": "supply_voltage",
                 "unit": "V",
+                "device_class": "voltage",
             },
             "voltage_0_10": {
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Spannung 10V",
                 "id": "voltage_0_10",
+                "device_class": "voltage",
+                "unit": "V",
             },
             "switch_state": {
                 "value": 1,
@@ -252,6 +275,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "id": "usb_state",
             },
             "radio_state": {
+                "device_class": None,
                 "value": 1,
                 "category": "diagnostic",
                 "name": "Radio Status",
@@ -293,6 +317,8 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "category": "diagnostic",
                 "name": "Filter Zustand Zeit",
                 "id": "filter_condition_time",
+                "device_class": "duration",
+                "unit": "min",
             },
             "bypass_position": {
                 "value": 1,
@@ -321,6 +347,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Außenluft Temperatur",
                 "id": "outdoor_air_temperature",
                 "unit": "°C",
+                "device_class": "temperature",
             },
             "indoor_air_temperature": {
                 "value": 0.01,
@@ -328,6 +355,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Innenluft Temperatur",
                 "id": "indoor_air_temperature",
                 "unit": "°C",
+                "device_class": "temperature",
             },
             "error_code": {
                 "value": 1,
@@ -335,6 +363,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Fehlercode 1",
                 "id": "error_code",
                 "unit": "",
+                "device_class": None,
             },
             "error_code_2": {
                 "value": 1,
@@ -342,9 +371,10 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "name": "Fehlercode 2",
                 "id": "error_code_2",
                 "unit": "",
+                "device_class": None,
             },
         }
-
+        self.maxDiff = None
         poll = await poll_values(client)
         self.assertDictEqual(poll.model_dump(), expected)
         self.assertDictEqual(poll.model_dump(mode="json"), expected_json)
@@ -394,7 +424,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
             "error_code": 37,
             "error_code_2": 39,
         }
-
+        self.maxDiff = None
         client = ModbusClient.AsyncModbusTcpClient("localhost", port=5020)
         await client.connect()
         poll = await poll_values(client)

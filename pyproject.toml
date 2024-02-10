@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "hass_inspirair"}]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<=3.12"
+python = ">=3.9,<3.13"
 pymodbus = {version = "^3.6.2", extras = ["serial"]}
 paho-mqtt = "^1.6.1"
 pydantic = "^2.5.3"

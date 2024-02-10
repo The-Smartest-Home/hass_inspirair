@@ -31,7 +31,7 @@ class ModelTestCase(unittest.TestCase):
         self.assertEqual(str(response.fan_mode.id), "fan_mode")
         self.assertDictEqual(expected_data, response.model_dump(mode="json"))
         stuff = list(create_all(response))
-        self.assertEqual(22, len(stuff))
+        self.assertEqual(29, len(stuff))
 
     def test_translation(self) -> None:
         for lang in ["de", "en"]:
