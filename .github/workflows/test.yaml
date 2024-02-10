@@ -1,0 +1,43 @@
+name: 🧪 Test all Python versions
+
+on: push
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        poetry-version: ["1.6.1"]
+        os: [ubuntu-22.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: Install dependencies
+        run: poetry install
+      - name: Install dependencies
+        run: >-
+          poetry shell
+          pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: "contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm')"
+        with:
+          files: |
+            reports/**/*.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: "!(contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
+        with:
+          files: |
+            reports/**/*.xml
