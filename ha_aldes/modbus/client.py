@@ -69,20 +69,24 @@ async def change_fan_mode(mode: int, modbus_client: ModbusClient) -> bool:
     return False
 
 
+class ModbusDecodingError(Exception):
+    pass
+
+
 async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
     logger.debug("polling values...")
     try:
         request1: ModbusResponse = await modbus_client.read_holding_registers(1, 12, 2)
         if request1.isError():
-            raise RuntimeError("Register 1-12 could not be read.")
+            raise ModbusDecodingError("Register 1-12 could not be read.")
         request2 = await modbus_client.read_holding_registers(256, 30, 2)
         if request2.isError():
-            raise RuntimeError("Register 256-286 could not be read.")
+            raise ModbusDecodingError("Register 256-286 could not be read.")
         request3 = await modbus_client.read_holding_registers(337, 56, 2)
         if request3.isError():
-            raise RuntimeError("Register 337-392 could not be read.")
+            raise ModbusDecodingError("Register 337-392 could not be read.")
     except ModbusIOException as e:
-        raise RuntimeError from e
+        raise ModbusDecodingError from e
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
         request1.registers,
         byteorder=Endian.BIG,
@@ -198,5 +202,8 @@ async def modbus_polling_loop(
 ) -> None:
     logger.info("starting modbus loop")
     while True:
-        await poll_push(modbus_client, mqtt_client, callback)
-        await asyncio.sleep(interval)
+        try:
+            await poll_push(modbus_client, mqtt_client, callback)
+            await asyncio.sleep(interval)
+        except ModbusDecodingError as e:
+            logger.exception("An error while fetching modbus data occurred.", e)
