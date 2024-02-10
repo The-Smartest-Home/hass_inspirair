@@ -1,6 +1,8 @@
 name: 🧪 Test all Python versions
 
-on: push
+on:
+  pull_request:
+    branches: ["main"]
 
 jobs:
   test:
@@ -10,8 +12,13 @@ jobs:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
         poetry-version: ["1.6.1"]
         os: [ubuntu-22.04, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
 
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -21,23 +28,31 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
+
+      - name: Setup a local virtual environment (if no poetry.toml file)
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install
-      - name: Install dependencies
-        run: >-
-          poetry shell
-          pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
+      - name: Run Tests
+        run: poetry run pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
 
-      - name: Publish Test Results
+      - name: Publish Test Results ubuntu/arm
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: "contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm')"
+        if: "always() && (contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
         with:
           files: |
             reports/**/*.xml
 
-      - name: Publish Test Results
+      - name: Publish Test Results windows/mac
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: "!(contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
+        if: "always() && !(contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
         with:
           files: |
             reports/**/*.xml
