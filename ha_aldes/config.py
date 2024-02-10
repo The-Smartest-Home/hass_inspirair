@@ -22,6 +22,8 @@ def get_ip() -> str:
 class MQTTConfig(NamedTuple):
     hostname: str = EnvConfig.HA_ALDES_MQTT_HOST
     port: int = EnvConfig.HA_ALDES_MQTT_PORT
+    username: str = EnvConfig.HA_ALDES_MQTT_USERNAME
+    password: str = EnvConfig.HA_ALDES_MQTT_PASSWORD
 
 
 class ModbusConfig(NamedTuple):

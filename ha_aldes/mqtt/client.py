@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_client() -> Client:
-    return Client(*DEFAULT_CONFIG.mqtt)
+    return Client(**DEFAULT_CONFIG.mqtt._asdict())
 
 
 async def publish(topic: str, value: str, client: Client = None) -> None:

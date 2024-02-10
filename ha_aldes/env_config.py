@@ -7,6 +7,8 @@ class EnvConfigMeta(type):
     HA_ALDES_MQTT_HOST = "localhost"
     HA_ALDES_MQTT_PORT = 1883
     HA_ALDES_MQTT_PREFIX = "homeassistant"
+    HA_ALDES_MQTT_USERNAME = ""
+    HA_ALDES_MQTT_PASSWORD = ""
 
     HA_ALDES_MODBUS_CLIENT = "ha_aldes.modbus.client.get_async_serial_client"
     HA_ALDES_MODBUS_POLLING_INTERVALL = 30

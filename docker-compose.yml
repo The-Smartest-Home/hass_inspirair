@@ -1,6 +1,25 @@
 version: "3.9"
 
 services:
+  client:
+    restart: unless-stopped
+    build:
+      dockerfile_inline: |
+        FROM python:3.9 as build
+        RUN pip install poetry
+        COPY poetry.lock pyproject.toml .
+        RUN poetry install
+        COPY . .
+        RUN poetry build
+        FROM python:3.9 
+        COPY --from=build /dist/ /dist
+        RUN pip install /dist/ha_aldes*.whl
+        CMD python -m ha_aldes
+    environment:
+      - HA_ALDES_MQTT_HOST=mqtt
+      - HA_ALDES_MODBUS_CLIENT=ha_aldes.modbus.client.get_async_tcp_client
+      - HA_ALDES_MODBUS_TCP_HOST=modbus
+      - HA_ALDES_MODBUS_TCP_PORT=5020
   modbus:
     build:
       dockerfile_inline: |
