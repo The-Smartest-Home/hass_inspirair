@@ -196,7 +196,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
                 "device_class": "atmospheric_pressure",
                 "value": 1,
                 "category": "diagnostic",
-                "name": "Zuluft Durchfluss",
+                "name": "Zuluft Druck",
                 "id": "supply_pressure",
                 "unit": "Pa",
             },

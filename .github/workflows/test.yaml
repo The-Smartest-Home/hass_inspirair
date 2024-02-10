@@ -41,6 +41,8 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run Tests
+        env:
+          HI_CFG_LANGUAGE: de
         run: poetry run pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
 
       - name: Publish Test Results ubuntu/arm
