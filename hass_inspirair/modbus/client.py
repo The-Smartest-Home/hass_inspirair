@@ -29,6 +29,8 @@ def get_async_serial_client(framer: Framer = Framer.RTU) -> ModbusClient:
         bytesize=8,
         parity="E",
         stopbits=1,
+        timeout=1.5,
+        reconnect_delay=500,
     )
 
 
@@ -54,7 +56,15 @@ async def get_async_client() -> ModbusClient:
 WORD_SIZE = 2
 
 
+async def reconnect_client(modbus_client: ModbusClient) -> None:
+    logger.debug("Checking modbus connection state...")
+    if not modbus_client.connected:
+        logger.debug("... closed: reconnecting ...")
+        await modbus_client.close(reconnect=True)
+
+
 async def change_fan_mode(mode: int, modbus_client: ModbusClient) -> bool:
+    await reconnect_client(modbus_client)
     if mode in fan_mode_mapping:
         try:
             logger.debug(f"writing to register= 257 value = {mode}")
@@ -75,16 +85,20 @@ class ModbusDecodingError(Exception):
 
 async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
     logger.debug("polling values...")
+    await reconnect_client(modbus_client)
     try:
         request1: ModbusResponse = await modbus_client.read_holding_registers(1, 12, 2)
         if request1.isError():
             raise ModbusDecodingError("Register 1-12 could not be read.")
+        await asyncio.sleep(0.1)
         request2 = await modbus_client.read_holding_registers(256, 30, 2)
         if request2.isError():
             raise ModbusDecodingError("Register 256-286 could not be read.")
+        await asyncio.sleep(0.1)
         request3 = await modbus_client.read_holding_registers(337, 56, 2)
         if request3.isError():
             raise ModbusDecodingError("Register 337-392 could not be read.")
+        await asyncio.sleep(0.1)
     except ModbusIOException as e:
         raise ModbusDecodingError from e
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
@@ -205,5 +219,6 @@ async def modbus_polling_loop(
         try:
             await poll_push(modbus_client, mqtt_client, callback)
             await asyncio.sleep(interval)
+            modbus_client.close()
         except ModbusDecodingError as e:
             logger.exception("An error while fetching modbus data occurred.", e)

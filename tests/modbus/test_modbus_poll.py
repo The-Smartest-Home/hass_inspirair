@@ -9,6 +9,8 @@ from hass_inspirair.modbus.client import poll_values
 
 
 class MockClient(ModbusClientMixin):
+    connected = True
+
     async def execute(self, request: ModbusRequest) -> ModbusRequest:
         request.registers = [1] * 100
         request.isError = lambda: False
