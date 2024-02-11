@@ -2,6 +2,13 @@
 
 
 
+## v0.2.0 (2024-02-11)
+
+### Feature
+
+* feat: improve serial reconnection behavior ([`12e6572`](https://github.com/The-Smartest-Home/hass_inspirair/commit/12e657251238545e2f6334a1dce5e5e0d95b934d))
+
+
 ## v0.1.1 (2024-02-11)
 
 ### Fix
