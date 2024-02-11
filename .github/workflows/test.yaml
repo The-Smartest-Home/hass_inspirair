@@ -44,17 +44,3 @@ jobs:
         env:
           HI_CFG_LANGUAGE: de
         run: poetry run pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
-
-      - name: Publish Test Results ubuntu/arm
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: "always() && (contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
-        with:
-          files: |
-            reports/**/*.xml
-
-      - name: Publish Test Results windows/mac
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: "always() && !(contains(matrix.os, 'ubuntu')  || contains(matrix.os, 'arm'))"
-        with:
-          files: |
-            reports/**/*.xml

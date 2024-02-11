@@ -1,0 +1,21 @@
+name: 🧪 Tag & Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+
+      - name: Install
+        run: python3 -m pip install python-semantic-release
+      - name: Release
+        run: semantic-release
