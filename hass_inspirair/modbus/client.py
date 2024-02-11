@@ -21,7 +21,7 @@ from hass_inspirair.mqtt.client import publish
 logger = logging.getLogger(__name__)
 
 
-def get_async_serial_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
+def get_async_serial_client(framer: Framer = Framer.RTU) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         framer=framer,
         port=EnvConfig.HI_MODBUS_SERIAL_DEVICE,
