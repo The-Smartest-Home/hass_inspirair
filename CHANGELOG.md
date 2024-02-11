@@ -2,6 +2,17 @@
 
 
 
+## v0.1.1 (2024-02-11)
+
+### Fix
+
+* fix: use rtu framer for default serial client ([`f1063e0`](https://github.com/The-Smartest-Home/hass_inspirair/commit/f1063e050926171380a3adf226464366784d3323))
+
+### Refactor
+
+* refactor: make logging configurable ([`f8f2c23`](https://github.com/The-Smartest-Home/hass_inspirair/commit/f8f2c23b6e3241a9bfc6405050141288713ff5fc))
+
+
 ## v0.1.0 (2024-02-11)
 
 ### Feature
