@@ -1,6 +1,8 @@
 name: 📦 PyPI and TestPyPI
 
-on: push
+on:
+  push:
+    branches: ["main"]
 
 jobs:
   build:

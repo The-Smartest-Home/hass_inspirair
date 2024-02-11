@@ -1,248 +1,248 @@
-#: hass_inspirair/ha/devices.py:22
-msgid "Ventilation"
-msgstr "Ventilation"
-
-#: hass_inspirair/modbus/model.py:72 hass_inspirair/modbus/model.py:83
+#: hass_inspirair/modbus/model.py:79 hass_inspirair/modbus/model.py:90
 msgid "Auto"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:72
+#: hass_inspirair/modbus/model.py:79
 msgid "Hygro"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:72
+#: hass_inspirair/modbus/model.py:79
 msgid "Constant Speed"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:75
+#: hass_inspirair/modbus/model.py:82
 msgid "Holidays"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:76
+#: hass_inspirair/modbus/model.py:83
 msgid "Standard"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:77
+#: hass_inspirair/modbus/model.py:84
 msgid "Kitchen High Speed"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:78
+#: hass_inspirair/modbus/model.py:85
 msgid "Guests"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:82
+#: hass_inspirair/modbus/model.py:89
 msgid "Off"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:84
+#: hass_inspirair/modbus/model.py:91
 msgid "Winter optimisation"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:85
+#: hass_inspirair/modbus/model.py:92
 msgid "Summer optimisation"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:86 hass_inspirair/modbus/model.py:98
+#: hass_inspirair/modbus/model.py:93 hass_inspirair/modbus/model.py:105
 msgid "Open"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:90
+#: hass_inspirair/modbus/model.py:97
 msgid "Separated Speeds"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:91
+#: hass_inspirair/modbus/model.py:98
 msgid "Separated Airflows"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:92
+#: hass_inspirair/modbus/model.py:99
 msgid "Separated Pressures"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:93
+#: hass_inspirair/modbus/model.py:100
 msgid "Adjusted Pressure"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:97
+#: hass_inspirair/modbus/model.py:104
 msgid "Close"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:99
+#: hass_inspirair/modbus/model.py:106
 msgid "Closing"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:100
+#: hass_inspirair/modbus/model.py:107
 msgid "Opening"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:102
+#: hass_inspirair/modbus/model.py:108
+msgid "Short circuit"
+msgstr ""
+
+#: hass_inspirair/modbus/model.py:109
 msgid "Open circuit"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:103
+#: hass_inspirair/modbus/model.py:110
 msgid "Under supply"
 msgstr ""
 
-#: hass_inspirair/modbus/model.py:128
+#: hass_inspirair/modbus/model.py:135
 msgid "id"
 msgstr "Device Id"
 
-#: hass_inspirair/modbus/model.py:129
+#: hass_inspirair/modbus/model.py:136
 msgid "serial_id"
 msgstr "Serial number"
 
-#: hass_inspirair/modbus/model.py:130
+#: hass_inspirair/modbus/model.py:137
 msgid "sw_version"
 msgstr "Software Version"
 
-#: hass_inspirair/modbus/model.py:131
+#: hass_inspirair/modbus/model.py:138
 msgid "regulation_mode"
 msgstr "Regulation Mode"
 
-#: hass_inspirair/modbus/model.py:132
+#: hass_inspirair/modbus/model.py:139
 msgid "fan_mode"
 msgstr "Fan Mode"
 
-#: hass_inspirair/modbus/model.py:133
+#: hass_inspirair/modbus/model.py:140
 msgid "night_cooling"
 msgstr "Night Cooling"
 
-#: hass_inspirair/modbus/model.py:134
+#: hass_inspirair/modbus/model.py:141
 msgid "bypass_exchanger"
 msgstr "Bypass Exchanger"
 
-#: hass_inspirair/modbus/model.py:136
+#: hass_inspirair/modbus/model.py:143
 msgid "regulation_system"
 msgstr "Regulation System"
 
-#: hass_inspirair/modbus/model.py:137
+#: hass_inspirair/modbus/model.py:144
 msgid "holiday_time"
 msgstr "Holiday Runtime"
 
-#: hass_inspirair/modbus/model.py:138
+#: hass_inspirair/modbus/model.py:145
 msgid "kitchen_time"
 msgstr "Kitchen Runtime"
 
-#: hass_inspirair/modbus/model.py:139
+#: hass_inspirair/modbus/model.py:146
 msgid "boost_time"
 msgstr "Boost Runtime"
 
-#: hass_inspirair/modbus/model.py:140
+#: hass_inspirair/modbus/model.py:147
 msgid "filter_time"
 msgstr "Filter Runtime"
 
-#: hass_inspirair/modbus/model.py:141
+#: hass_inspirair/modbus/model.py:148
 msgid "aux_time_1"
 msgstr "Aux1 Runtime"
 
-#: hass_inspirair/modbus/model.py:142
+#: hass_inspirair/modbus/model.py:149
 msgid "aux_time_2"
 msgstr "Aux2 Runtime"
 
-#: hass_inspirair/modbus/model.py:143
+#: hass_inspirair/modbus/model.py:150
 msgid "extract_airflow"
 msgstr "Output Airflow"
 
-#: hass_inspirair/modbus/model.py:144
+#: hass_inspirair/modbus/model.py:151
 msgid "supply_airflow"
 msgstr "Input Airflow"
 
-#: hass_inspirair/modbus/model.py:145
+#: hass_inspirair/modbus/model.py:152
 msgid "extract_pressure"
 msgstr "Output Pressure"
 
-#: hass_inspirair/modbus/model.py:146
+#: hass_inspirair/modbus/model.py:153
 msgid "supply_pressure"
 msgstr "Input Pressure"
 
-#: hass_inspirair/modbus/model.py:147
+#: hass_inspirair/modbus/model.py:154
 msgid "extract_speed"
 msgstr "Output Airspeed"
 
-#: hass_inspirair/modbus/model.py:148
+#: hass_inspirair/modbus/model.py:155
 msgid "supply_speed"
 msgstr "Input Airspeed"
 
-#: hass_inspirair/modbus/model.py:149
+#: hass_inspirair/modbus/model.py:156
 msgid "extract_supply_ratio"
 msgstr "I/O Ration"
 
-#: hass_inspirair/modbus/model.py:150
+#: hass_inspirair/modbus/model.py:158
 msgid "temperature_summer_comfort"
 msgstr "Summer Comfort Temperatur"
 
-#: hass_inspirair/modbus/model.py:151
+#: hass_inspirair/modbus/model.py:160
 msgid "u1_value"
 msgstr "U1"
 
-#: hass_inspirair/modbus/model.py:152
+#: hass_inspirair/modbus/model.py:161
 msgid "u2_value"
 msgstr "U2"
 
-#: hass_inspirair/modbus/model.py:153
+#: hass_inspirair/modbus/model.py:162
 msgid "supply_voltage"
 msgstr "Voltage"
 
-#: hass_inspirair/modbus/model.py:154
+#: hass_inspirair/modbus/model.py:163
 msgid "voltage_0_10"
 msgstr "Voltage 10V"
 
-#: hass_inspirair/modbus/model.py:155
+#: hass_inspirair/modbus/model.py:164
 msgid "switch_state"
 msgstr "Switch State"
 
-#: hass_inspirair/modbus/model.py:156
+#: hass_inspirair/modbus/model.py:165
 msgid "usb_state"
 msgstr "USB State"
 
-#: hass_inspirair/modbus/model.py:157
+#: hass_inspirair/modbus/model.py:166
 msgid "radio_state"
 msgstr "Radio State"
 
-#: hass_inspirair/modbus/model.py:158
+#: hass_inspirair/modbus/model.py:167
 msgid "ibus_receptions"
 msgstr "Ibus Reception"
 
-#: hass_inspirair/modbus/model.py:159
+#: hass_inspirair/modbus/model.py:168
 msgid "ibus_auxiliary"
 msgstr "iBus auxiliary"
 
-#: hass_inspirair/modbus/model.py:160
+#: hass_inspirair/modbus/model.py:169
 msgid "hmi_installer"
 msgstr "Installer HMI"
 
-#: hass_inspirair/modbus/model.py:161
+#: hass_inspirair/modbus/model.py:170
 msgid "hmi_user"
 msgstr "User HMI"
 
-#: hass_inspirair/modbus/model.py:162
+#: hass_inspirair/modbus/model.py:171
 msgid "filter_condition"
 msgstr "Filter Condition"
 
-#: hass_inspirair/modbus/model.py:163
+#: hass_inspirair/modbus/model.py:172
 msgid "filter_condition_time"
 msgstr "Filter Time"
 
-#: hass_inspirair/modbus/model.py:164
+#: hass_inspirair/modbus/model.py:173
 msgid "bypass_position"
 msgstr "Bypass Position"
 
-#: hass_inspirair/modbus/model.py:165
+#: hass_inspirair/modbus/model.py:174
 msgid "bypass_consumption"
 msgstr "Bypass Consumption"
 
-#: hass_inspirair/modbus/model.py:166
+#: hass_inspirair/modbus/model.py:176
 msgid "outdoor_air_temperature"
 msgstr "Outdoor Air Temperature"
 
-#: hass_inspirair/modbus/model.py:167
+#: hass_inspirair/modbus/model.py:179
 msgid "indoor_air_temperature"
 msgstr "Indoor Air Temperatur"
 
-#: hass_inspirair/modbus/model.py:168
+#: hass_inspirair/modbus/model.py:181
 msgid "error_code"
 msgstr "Error Code 1"
 
-#: hass_inspirair/modbus/model.py:169
+#: hass_inspirair/modbus/model.py:182
 msgid "error_code_2"
 msgstr "Error Code 2"
 
@@ -263,4 +263,7 @@ msgstr "Error Code 2"
 
 #~ msgid "Bypass Position"
 #~ msgstr ""
+
+#~ msgid "Ventilation"
+#~ msgstr "Ventilation"
 

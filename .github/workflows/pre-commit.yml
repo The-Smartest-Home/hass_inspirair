@@ -5,9 +5,6 @@
 name: 🔍 pre-commit
 
 on:
-  push:
-    # Run against all branches
-    # branches: [ "main" ]
   pull_request:
     branches: ["main"]
 
