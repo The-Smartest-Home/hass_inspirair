@@ -56,15 +56,15 @@ async def get_async_client() -> ModbusClient:
 WORD_SIZE = 2
 
 
-async def reconnect_client(modbus_client: ModbusClient) -> None:
+def reconnect_client(modbus_client: ModbusClient) -> None:
     logger.debug("Checking modbus connection state...")
     if not modbus_client.connected:
         logger.debug("... closed: reconnecting ...")
-        await modbus_client.close(reconnect=True)
+        modbus_client.close(reconnect=True)
 
 
 async def change_fan_mode(mode: int, modbus_client: ModbusClient) -> bool:
-    await reconnect_client(modbus_client)
+    reconnect_client(modbus_client)
     if mode in fan_mode_mapping:
         try:
             logger.debug(f"writing to register= 257 value = {mode}")
@@ -85,7 +85,7 @@ class ModbusDecodingError(Exception):
 
 async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
     logger.debug("polling values...")
-    await reconnect_client(modbus_client)
+    reconnect_client(modbus_client)
     try:
         request1: ModbusResponse = await modbus_client.read_holding_registers(1, 12, 2)
         if request1.isError():
