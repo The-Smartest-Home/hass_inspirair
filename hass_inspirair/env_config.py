@@ -5,6 +5,7 @@ from typing import Any
 
 class EnvConfigMeta(type):
     HI_CFG_LANGUAGE = "de"
+    HI_CFG_LOGLEVEL = "INFO"
     HI_MQTT_HOST = "localhost"
     HI_MQTT_PORT = 1883
     HI_MQTT_PREFIX = "homeassistant"
