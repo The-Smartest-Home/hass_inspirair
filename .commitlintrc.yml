@@ -16,11 +16,7 @@ rules:
       - docs
       - feat
       - fix
-      - perf
       - refactor
       - revert
       - style
-      - test
-      - data
-      - explore
-      - result
+      - version

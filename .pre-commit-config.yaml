@@ -19,7 +19,7 @@ repos:
         stages:
           - commit
           - manual
-        exclude: (data/raw/|deployment/)
+        exclude: (data/raw/|deployment/|CHANGELOG.md)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.278
     hooks:
