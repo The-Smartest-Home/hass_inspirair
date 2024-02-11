@@ -1,21 +1,47 @@
-name: 🧪 Tag & Release
+name: 🚀 Tag & Release
 
 on:
   workflow_dispatch:
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write # IMPORTANT: mandatory for sigstore
       issues: read
-      checks: write
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-python@v4
+      - name: Poetry install
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.6.1"
+      - name: Setup a local virtual environment
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Install the project dependencies
+        run: poetry install
+      - name: Update project version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory $(pwd)
+          poetry version $(poetry run semantic-release -c .github/workflows/release.ini version --print)
+          git add pyproject.toml
 
-      - name: Install
-        run: python3 -m pip install python-semantic-release
-      - name: Release
-        run: semantic-release
+      - name: Create Tag
+        env:
+          GH_TOKEN: ${{ secrets.PAT}}
+        run: |
+          poetry run semantic-release -c .github/workflows/release.ini version
