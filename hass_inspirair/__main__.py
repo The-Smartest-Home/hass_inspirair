@@ -1,5 +1,7 @@
+import argparse
 import asyncio
 import logging
+import os
 import sys
 
 from hass_inspirair.env_config import EnvConfig
@@ -19,7 +21,18 @@ def _init_logger() -> None:
     logger.addHandler(handler)
 
 
-_init_logger()
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main_loop(loop))
-loop.close()
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", "--config", default="./config.ini")
+args = parser.parse_args()
+os.environ["HI_CFG_FILE"] = args.config
+
+
+def main() -> None:
+    _init_logger()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main_loop(loop))
+    loop.close()
+
+
+if __name__ == "__main__":
+    main()
