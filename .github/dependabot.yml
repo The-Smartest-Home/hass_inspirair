@@ -12,7 +12,7 @@ updates:
     groups:
       poetry:
         patterns:
-        - "*"
+          - "*"
         update-types:
-        - "minor"
-        - "patch"
+          - "minor"
+          - "patch"
