@@ -87,7 +87,9 @@ WORD_SIZE = 2
 async def change_fan_mode(mode: int) -> bool:
     if mode in fan_mode_mapping:
         async for result in _interact_with_client(
-            lambda client: client.write_register(257, mode, 2)
+            lambda client: client.write_registers(
+                257, mode, slave=EnvConfig.HI_MODBUS_SLAVE_ID
+            )
         ):
             return result is not None
         return True
@@ -105,9 +107,15 @@ async def poll_values() -> AldesModbusResponse:
 
     responses: List[Optional[ModbusResponse]] = []
     async for response in _interact_with_client(
-        lambda client: client.read_holding_registers(1, 12, 2),
-        lambda client: client.read_holding_registers(256, 30, 2),
-        lambda client: client.read_holding_registers(337, 56, 2),
+        lambda client: client.read_holding_registers(
+            1, count=12, slave=EnvConfig.HI_MODBUS_SLAVE_ID
+        ),
+        lambda client: client.read_holding_registers(
+            256, count=30, slave=EnvConfig.HI_MODBUS_SLAVE_ID
+        ),
+        lambda client: client.read_holding_registers(
+            337, count=56, slave=EnvConfig.HI_MODBUS_SLAVE_ID
+        ),
     ):
         responses.append(response)
 
