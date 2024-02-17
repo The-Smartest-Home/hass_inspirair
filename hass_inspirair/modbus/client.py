@@ -53,10 +53,6 @@ async def get_async_client() -> ModbusClient:
         logger.warning("Will use default serial client")
         client = get_async_serial_client()
 
-    logger.debug("connecting modbus client")
-    await client.connect()
-    # test client is connected
-    assert client.connected
     return client
 
 
@@ -65,7 +61,10 @@ async def _interact_with_client(
 ) -> AsyncGenerator[None, ModbusResponse]:
     async with lock:
         async with await get_async_client() as client:
-            logger.debug("get and verify data")
+            logger.debug("connecting modbus client")
+            assert client.connected
+
+            logger.debug("executing actions")
             for action in actions:
                 try:
                     rr = await action(client)
