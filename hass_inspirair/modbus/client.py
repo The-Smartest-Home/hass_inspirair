@@ -19,6 +19,8 @@ from hass_inspirair.mqtt.client import publish
 
 logger = logging.getLogger(__name__)
 
+lock = asyncio.Lock()
+
 
 def get_async_serial_client(framer: Framer = Framer.RTU) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
@@ -61,21 +63,22 @@ async def get_async_client() -> ModbusClient:
 async def _interact_with_client(
     *actions: Callable[[ModbusClient], Awaitable[ModbusResponse]]
 ) -> AsyncGenerator[None, ModbusResponse]:
-    async with await get_async_client() as client:
-        logger.debug("get and verify data")
-        for action in actions:
-            try:
-                rr = await action(client)
-            except ModbusException as exc:
-                logger.error(f"Received ModbusException({exc}) from library")
-                yield None
-            if rr.isError():
-                logger.error(f"Received Modbus library error({rr})")
-                yield None
-            if isinstance(rr, ExceptionResponse):
-                logger.error(f"Received Modbus library exception ({rr})")
-                yield None
-            yield rr
+    async with lock:
+        async with await get_async_client() as client:
+            logger.debug("get and verify data")
+            for action in actions:
+                try:
+                    rr = await action(client)
+                except ModbusException as exc:
+                    logger.error(f"Received ModbusException({exc}) from library")
+                    yield None
+                if rr.isError():
+                    logger.error(f"Received Modbus library error({rr})")
+                    yield None
+                if isinstance(rr, ExceptionResponse):
+                    logger.error(f"Received Modbus library exception ({rr})")
+                    yield None
+                yield rr
 
 
 WORD_SIZE = 2
