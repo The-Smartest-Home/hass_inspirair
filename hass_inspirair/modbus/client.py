@@ -1,17 +1,16 @@
 import asyncio
 import importlib
 import logging
-from typing import Awaitable, Callable, Optional
+from typing import AsyncGenerator, Awaitable, Callable, List, Optional
 
 import pymodbus.client as ModbusClient
 from aiomqtt import Client
 from pymodbus import Framer
 from pymodbus.client import AsyncModbusTcpClient
-from pymodbus.client.base import ModbusBaseClient
 from pymodbus.constants import Endian
-from pymodbus.exceptions import ModbusIOException
+from pymodbus.exceptions import ModbusException
 from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.pdu import ModbusResponse
+from pymodbus.pdu import ExceptionResponse, ModbusResponse
 
 from hass_inspirair.config import DEFAULT_CONFIG, Config
 from hass_inspirair.env_config import EnvConfig
@@ -46,34 +45,49 @@ async def get_async_client() -> ModbusClient:
         _module_name, _function = DEFAULT_CONFIG.modbus.client.rsplit(".", 1)
         _module = importlib.import_module(_module_name)
         _get_client = getattr(_module, _function)
-        return _get_client()
-    except ModuleNotFoundError as e:
-        logger.exception("Could create client", e)
+        client = _get_client()
+    except ModuleNotFoundError:
+        logger.exception("Could not create client")
         logger.warning("Will use default serial client")
-    return get_async_serial_client()
+        client = get_async_serial_client()
+
+    logger.debug("connecting modbus client")
+    await client.connect()
+    # test client is connected
+    assert client.connected
+    return client
+
+
+async def _interact_with_client(
+    *actions: Callable[[ModbusClient], Awaitable[ModbusResponse]]
+) -> AsyncGenerator[None, ModbusResponse]:
+    async with await get_async_client() as client:
+        logger.debug("get and verify data")
+        for action in actions:
+            try:
+                rr = await action(client)
+            except ModbusException as exc:
+                logger.error(f"Received ModbusException({exc}) from library")
+                yield None
+            if rr.isError():
+                logger.error(f"Received Modbus library error({rr})")
+                yield None
+            if isinstance(rr, ExceptionResponse):
+                logger.error(f"Received Modbus library exception ({rr})")
+                yield None
+            yield rr
 
 
 WORD_SIZE = 2
 
 
-def reconnect_client(modbus_client: ModbusClient) -> None:
-    logger.debug("Checking modbus connection state...")
-    if not modbus_client.connected:
-        logger.debug("... closed: reconnecting ...")
-        modbus_client.close(reconnect=True)
-
-
-async def change_fan_mode(mode: int, modbus_client: ModbusClient) -> bool:
-    reconnect_client(modbus_client)
+async def change_fan_mode(mode: int) -> bool:
     if mode in fan_mode_mapping:
-        try:
-            logger.debug(f"writing to register= 257 value = {mode}")
-            request: ModbusResponse = await modbus_client.write_register(257, mode, 2)
-            if request.isError():
-                raise RuntimeError("Could not wirte to register 257")
-            return True
-        except ModbusIOException as e:
-            raise RuntimeError from e
+        async for result in _interact_with_client(
+            lambda client: client.write_register(257, mode, 2)
+        ):
+            return result is not None
+        return True
 
     logger.error(f"Tried to set unknown fan mode {mode}")
     return False
@@ -83,24 +97,25 @@ class ModbusDecodingError(Exception):
     pass
 
 
-async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
+async def poll_values() -> AldesModbusResponse:
     logger.debug("polling values...")
-    reconnect_client(modbus_client)
-    try:
-        request1: ModbusResponse = await modbus_client.read_holding_registers(1, 12, 2)
-        if request1.isError():
-            raise ModbusDecodingError("Register 1-12 could not be read.")
-        await asyncio.sleep(0.1)
-        request2 = await modbus_client.read_holding_registers(256, 30, 2)
-        if request2.isError():
-            raise ModbusDecodingError("Register 256-286 could not be read.")
-        await asyncio.sleep(0.1)
-        request3 = await modbus_client.read_holding_registers(337, 56, 2)
-        if request3.isError():
-            raise ModbusDecodingError("Register 337-392 could not be read.")
-        await asyncio.sleep(0.1)
-    except ModbusIOException as e:
-        raise ModbusDecodingError from e
+
+    responses: List[Optional[ModbusResponse]] = []
+    async for response in _interact_with_client(
+        lambda client: client.read_holding_registers(1, 12, 2),
+        lambda client: client.read_holding_registers(256, 30, 2),
+        lambda client: client.read_holding_registers(337, 56, 2),
+    ):
+        responses.append(response)
+
+    request1, request2, request3 = responses
+
+    if request1 is None:
+        raise ModbusDecodingError("Register 1-12 could not be read.")
+    if request2 is None:
+        raise ModbusDecodingError("Register 256-286 could not be read.")
+    if request3 is None:
+        raise ModbusDecodingError("Register 337-392 could not be read.")
     decoder_1 = BinaryPayloadDecoder.fromRegisters(
         request1.registers,
         byteorder=Endian.BIG,
@@ -197,19 +212,17 @@ async def poll_values(modbus_client: ModbusClient) -> AldesModbusResponse:
 
 
 async def poll_push(
-    modbus_client: ModbusBaseClient,
     mqtt_client: Client,
     callback: Callable[[str, str, Optional[Client]], Awaitable[None]] = publish,
 ) -> AldesModbusResponse:
     config = Config()
-    response = await poll_values(modbus_client)
+    response = await poll_values()
     topic = config.get_state_topic(response.serial_id.value)
     await callback(topic, response.model_dump_json(), mqtt_client)
     return response
 
 
 async def modbus_polling_loop(
-    modbus_client: ModbusBaseClient,
     mqtt_client: Client,
     callback: Callable[[str, str, Optional[Client]], Awaitable[None]] = publish,
     interval: int = DEFAULT_CONFIG.modbus.polling_intervall,
@@ -217,8 +230,7 @@ async def modbus_polling_loop(
     logger.info("starting modbus loop")
     while True:
         try:
-            await poll_push(modbus_client, mqtt_client, callback)
+            await poll_push(mqtt_client, callback)
             await asyncio.sleep(interval)
-            modbus_client.close()
         except ModbusDecodingError as e:
             logger.exception("An error while fetching modbus data occurred.", e)

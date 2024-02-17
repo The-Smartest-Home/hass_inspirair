@@ -2,24 +2,12 @@ import unittest
 
 import pymodbus.client as ModbusClient
 import pytest
-from pymodbus.client.mixin import ModbusClientMixin
-from pymodbus.pdu import ModbusRequest
 
 from hass_inspirair.modbus.client import poll_values
 
 
-class MockClient(ModbusClientMixin):
-    connected = True
-
-    async def execute(self, request: ModbusRequest) -> ModbusRequest:
-        request.registers = [1] * 100
-        request.isError = lambda: False
-        return request
-
-
 class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
     async def test_poll(self) -> None:
-        client = MockClient()
         expected_json = {
             "id": "65537",
             "serial_id": "281479271743489",
@@ -377,7 +365,7 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
             },
         }
         self.maxDiff = None
-        poll = await poll_values(client)
+        poll = await poll_values()
         self.assertDictEqual(poll.model_dump(), expected)
         self.assertDictEqual(poll.model_dump(mode="json"), expected_json)
 
@@ -429,5 +417,5 @@ class ModbusPollTest(unittest.IsolatedAsyncioTestCase):
         self.maxDiff = None
         client = ModbusClient.AsyncModbusTcpClient("localhost", port=5020)
         await client.connect()
-        poll = await poll_values(client)
+        poll = await poll_values()
         self.assertDictEqual(poll.model_dump(mode="json"), expected)
