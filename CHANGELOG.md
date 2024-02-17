@@ -2,6 +2,27 @@
 
 
 
+## v0.3.0 (2024-02-17)
+
+### Feature
+
+* feat: prevent multiple useage of modbus client ([`189cba7`](https://github.com/The-Smartest-Home/hass_inspirair/commit/189cba76be2eedee6f28488cd9d044d3a6006dbe))
+
+### Fix
+
+* fix: remove duplicate connect ([`48204d6`](https://github.com/The-Smartest-Home/hass_inspirair/commit/48204d6158e9b991ea1bdad9edeee5f81cd653c1))
+
+* fix: use sync reconnect ([`4c7a606`](https://github.com/The-Smartest-Home/hass_inspirair/commit/4c7a606a1a38721e21a49fb0b755c3377c8779c5))
+
+### Refactor
+
+* refactor: use new modbus clients for every request ([`a8868d2`](https://github.com/The-Smartest-Home/hass_inspirair/commit/a8868d201af0b43480e333a302ce5969956fed96))
+
+### Unknown
+
+* Create dependabot.yml ([`19d6d64`](https://github.com/The-Smartest-Home/hass_inspirair/commit/19d6d64bfa27cb0b69c63e481b4aa159495e1dcc))
+
+
 ## v0.2.0 (2024-02-11)
 
 ### Feature
