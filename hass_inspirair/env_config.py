@@ -13,6 +13,7 @@ class EnvConfigMeta(type):
     HI_MQTT_PASSWORD = ""
 
     HI_MODBUS_CLIENT = "hass_inspirair.modbus.client.get_async_serial_client"
+    HI_MODBUS_SLAVE_ID = 2
     HI_MODBUS_POLLING_INTERVALL = 30
     HI_MODBUS_SERIAL_DEVICE = "/dev/ttyACM"
     HI_MODBUS_TCP_HOST = "localhost"
@@ -21,7 +22,7 @@ class EnvConfigMeta(type):
     def _read_config(self) -> dict[str, str]:
         if not hasattr(self, "__file_config"):
             config = configparser.ConfigParser()
-            config.read("config.ini")
+            config.read(os.getenv("HI_CFG_FILE", "./config.ini"))
 
             self.__file_config = {
                 "_".join(["HI", sec_name, config_key]).upper(): config_value
