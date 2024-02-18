@@ -2,13 +2,13 @@
 
 [[package]]
 name = "aiomqtt"
-version = "1.2.1"
+version = "2.0.0"
 description = "The idiomatic asyncio MQTT client, wrapped around paho-mqtt"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "aiomqtt-1.2.1-py3-none-any.whl", hash = "sha256:3925b40b2b95b1905753d53ef3a9162e903cfab35ebe9647ab4d52e45ffb727f"},
-    {file = "aiomqtt-1.2.1.tar.gz", hash = "sha256:7582f4341f08ef7110dd9ab3a559454dc28ccda1eac502ff8f08a73b238ecede"},
+    {file = "aiomqtt-2.0.0-py3-none-any.whl", hash = "sha256:f3b97eca4a5a2c40769ed14f660520f733be1d2ec383a9976153fe49141e2fa2"},
+    {file = "aiomqtt-2.0.0.tar.gz", hash = "sha256:3d480429334bdba4e4b9936c6cc198ea4f76a94d36cf294e0f713ec59f6a2120"},
 ]
 
 [package.dependencies]
@@ -1001,4 +1001,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "c94da8c286cb6ff4eec65551ff2645448c9d4ea0a0dab3b9f6425cb10cfa0a52"
+content-hash = "887f96d89976c3fca02c8c8f3bd9e05bc6d15d2ef68f79de516e507209990a61"
