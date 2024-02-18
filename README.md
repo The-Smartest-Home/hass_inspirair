@@ -9,14 +9,116 @@
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-A python library that connects to the ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for Home Assistant.
+![img.png](docs/tutorial/mqtt_device.png | width=300)
 
-Only the ventilation mode is currently writable. However, it takes a **significant** time before the value changes after a write command.
+A python application that connects to the ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for [Home Assistant](https://www.home-assistant.io/) .
+
+<details>
+<summary>Schematics of dataflow</summary>
+
+```mermaid
+graph LR
+    P(hass-inspirair) <-- MQTT --> M(MQTT Broker)
+    I[InspirAir® Home] <-- ModBus --> P
+    HM(Home Assistant \n MQTT Integration) <--MQTT--> M
+    H[Home Assistant] <----> HM
+```
+
+</details>
+
+Only the ventilation mode is currently writable. However, it takes some time before the value changes after a write command.
 Since the register will stay at its previous value until the target state is reached.
+
+Following features are implemented:
+
+<details>
+  <summary>1. Register after starting up</summary>
+  
+```mermaid
+sequenceDiagram
+    participant H as Home Assistant(MQTT)
+    participant L as hass-inspirair
+    participant I as InspirAir
+    
+    
+    L->>+I: read_holding_registers
+    activate L
+    L-->>L: creat config
+    
+    L->>-H: register <prefix>/<sensor_type>/<object_id>/<device_serial>/config
+```
+</details>
+
+<details>
+<summary>2. Continues updates</summary>
+
+```mermaid
+sequenceDiagram
+
+    participant H as Home Assistant(MQTT)
+    participant L as hass-inspirair
+    participant I as InspirAir
+
+
+    L->>I: read_holding_registers
+    activate L
+    L->>L: parse result
+    L->>H: publish <prefix>/climate/<device_serial>/state
+    L->>L: sleep for <polling interval>
+    deactivate L
+
+
+```
+
+</details>
+
+<details>
+<summary>3. React on Home Assistant Inputs</summary>
+
+```mermaid
+sequenceDiagram
+    participant H as Home Assistant(MQTT)
+    participant L as hass-inspirair
+    participant I as InspirAir
+
+    H->>L: publish "<prefix>/select/<object_id>/<device_serial>/set"
+     activate L
+    L->>I: write_registers
+    L->>I: read_holding_registers
+
+    L->>L: parse result
+    L->>H: publish <prefix>/climate/<device_serial>/state
+    deactivate L
+
+```
+
+</details>
+
+<details>
+<summary>4. React on Home Assistant MQTT lifecycle events</summary>
+
+```mermaid
+sequenceDiagram
+
+    participant H as Home Assistant(MQTT)
+    participant L as hass-inspirair
+    participant I as InspirAir
+
+    H->>L: publish "<prefix>/status" payload: "online"
+    activate L
+    L->>+I: read_holding_registers
+
+    L-->>L: creat config
+
+    L->>-H: register <prefix>/<sensor_type>/<object_id>/<device_serial>/config
+
+```
+
+</details>
 
 ## Supported Models
 
-In theory this lib should work with any `InspirAir® Home` Ventilation system.
+In theory this application should work with any `InspirAir® Home` Ventilation system.
 
 Currently, only the following was actually tested:
 
@@ -25,15 +127,14 @@ Currently, only the following was actually tested:
 ## Usage
 
 Configure a `config.ini` file based on your requirements.
+See [config.ini](./config.ini) for configuration options which can also be set via environment variables [(see env_config.py)](./hass_inspirair/env_config.py).
 
 ```bash
 pip intall hass-inspirair
 ha-inspirair -c ./config.ini
 ```
 
-## Configuration
-
-See [config.ini](./config.ini) for configuration options which can also be set via environment variables [(see env_config.py)](./hass_inspirair/env_config.py).
+For are more exhaustive usage tutorial see [docs/tutorial/README.md](docs/tutorial/README.md).
 
 ## Simulator/Testing
 
