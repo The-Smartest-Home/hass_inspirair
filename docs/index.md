@@ -1,3 +1,5 @@
+![Home Assistant MQTT Device screenshot](tutorial/mqtt_device.png)
+
 ```{include} ../README.md
 
 ```

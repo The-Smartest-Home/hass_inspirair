@@ -9,8 +9,6 @@
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-<img src="docs/tutorial/mqtt_device.png" width=50% height=50%>
-
 A python application that connects to the ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for [Home Assistant](https://www.home-assistant.io/) .
 
 <details>

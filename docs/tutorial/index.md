@@ -75,13 +75,13 @@ sudo journalctl -u hass-inspirair
 
 ## After completing these steps a device should be recognized:
 
-![img.png](mqtt_device.png)
+![Home Assistant MQTT Device screenshot](mqtt_device.png)
 
 ## Aditional
 
 Since the default card looks a bit odd, I am using a [custom:simple-thermostat](https://github.com/nervetattoo/simple-thermostat) card:
 
-![img.png](card_example.png)
+![Simple Thermostat Card Screenshot](card_example.png)
 
 <details>
 <summary>Card Yaml</summary>

@@ -5,9 +5,9 @@ description = ""
 authors = ["Kraus, Vadim <38394456+VadimKraus@users.noreply.github.com>"]
 license = "OSI Approved :: Apache Software License"
 readme = "README.md"
-homepage = "https://github.com/The-Smartest-Home/hass_inspirair"
+homepage = "https://the-smartest-home.github.io/hass_inspirair/"
 repository = "https://github.com/The-Smartest-Home/hass_inspirair"
-documentation = "https://github.com/The-Smartest-Home/hass_inspirair"
+documentation = "https://the-smartest-home.github.io/hass_inspirair/"
 classifiers = [
     "Development Status :: 4 - Beta",
 ]

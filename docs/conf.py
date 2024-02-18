@@ -17,6 +17,7 @@ extensions = [
     "myst_parser",
     "sphinx_copybutton",
     "sphinx.ext.napoleon",
+    "sphinx.ext.githubpages",
     "sphinxcontrib.mermaid",
 ]
 templates_path = ["_templates"]
@@ -26,6 +27,9 @@ pygments_dark_style = "dracula"
 myst_enable_extensions = ["strikethrough"]
 myst_heading_anchors = 2
 autodoc_default_options = {"member-order": "bysource"}
+html_css_files = [
+    "css/mermaid.css",
+]
 
 
 # -- Options for HTML output -------------------------------------------------
