@@ -2,6 +2,25 @@
 
 
 
+## v0.4.0 (2024-02-18)
+
+### Feature
+
+* feat: improve log formating ([`781b53d`](https://github.com/The-Smartest-Home/hass_inspirair/commit/781b53d73ede1753a2b6d0c0840546d1bf0ca24d))
+
+* feat: add validation for config file ([`0a24c54`](https://github.com/The-Smartest-Home/hass_inspirair/commit/0a24c5472923735abba2b827ae240830b57250dd))
+
+### Fix
+
+* fix: change voltage unit and speed units ([`40afd72`](https://github.com/The-Smartest-Home/hass_inspirair/commit/40afd724dcf0b25d7b8405a86777a9a35fdfa8b0))
+
+### Unknown
+
+* Chore/add pages (#11) ([`772b440`](https://github.com/The-Smartest-Home/hass_inspirair/commit/772b440dc9f3e545deb779fecd35d14300c6ee0e))
+
+* Example Usage doc (#10) ([`5f4e99d`](https://github.com/The-Smartest-Home/hass_inspirair/commit/5f4e99defc1e2e0e051235cba52a7bd72f9ff8eb))
+
+
 ## v0.3.0 (2024-02-17)
 
 ### Feature
