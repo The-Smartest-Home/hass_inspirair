@@ -2,7 +2,7 @@
 
 This document demonstrates an example how this library can be used using a Pi Zero 2W and a USB RS485 interface.
 
-### Workflow
+## Workflow
 
 ```mermaid
 graph LR
@@ -17,7 +17,7 @@ graph LR
 Assuming a ventilation system like `Aldes InspirAir Home SC 370` is already in place and
 [Home Assistant](https://www.home-assistant.io/) is running and the [MQTT](https://www.home-assistant.io/integrations/mqtt/) integration is [configured](https://my.home-assistant.io/redirect/config_flow_start?domain=mqtt) and running.
 
-| Component                                         | Prize (ca.) |
+| Component                                         | Price (ca.) |
 | ------------------------------------------------- | ----------- |
 | [Pi Zero 2W](https://amzn.to/42ITjqZ)             | ~26 €       |
 | [Pi (Case, USB adapter)](https://amzn.to/3uKeah1) | ~10 €       |

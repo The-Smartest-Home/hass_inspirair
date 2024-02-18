@@ -17,6 +17,7 @@ A python application that connects to the ventilation system `InspirAir® Home` 
 <summary>Schematics of dataflow</summary>
 
 ```mermaid
+
 graph LR
     P(hass-inspirair) <-- MQTT --> M(MQTT Broker)
     I[InspirAir Home] <-- ModBus --> P
@@ -130,15 +131,15 @@ Currently, only the following was actually tested:
 
 ## Usage
 
-Configure a `config.ini` file based on your requirements.
-See [config.ini](./config.ini) for configuration options which can also be set via environment variables [(see env_config.py)](./hass_inspirair/env_config.py).
+Configure a `config.ini` file based on your requirements (or use environment variables) .
+See [config.ini](config-ini.md) for configuration options which can also be set via environment variables [Config Values](#config).
 
 ```bash
 pip intall hass-inspirair
 ha-inspirair -c ./config.ini
 ```
 
-For are more exhaustive usage tutorial see [docs/tutorial/README.md](docs/tutorial/README.md).
+For are more exhaustive usage tutorial see [docs/tutorial/index.md](#tutorial/index).
 
 ## Simulator/Testing
 
