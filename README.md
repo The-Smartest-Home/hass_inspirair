@@ -1,6 +1,15 @@
 # hass-inspirair
 
-A python library that connects to a ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for home-assistant.
+![GitHub CI](https://github.com/The-Smartest-Home/hass_inspirair/actions/workflows/test.yaml/badge.svg)
+
+[![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.11-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+
+A python library that connects to the ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for Home Assistant.
 
 Only the ventilation mode is currently writable. However, it takes a **significant** time before the value changes after a write command.
 Since the register will stay at its previous value until the target state is reached.
