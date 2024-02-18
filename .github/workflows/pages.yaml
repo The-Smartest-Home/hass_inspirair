@@ -1,0 +1,57 @@
+name: Build Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "hass_inspirair/**"
+      - README.md
+      - .github/workflows/pages.yml
+  pull_request:
+    paths:
+      - "docs/**"
+      - "hass_inspirair/**"
+      - README.md
+      - .github/workflows/pages.yml
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      - name: Load virtual environment cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install
+      - name: Build documentation
+        run: |
+          set -o errexit -o pipefail -o nounset
+          find . -type f -name \*.md | awk '{print "sed -i \"s/mermaid/{mermaid}/\" " $1}' | bash
+          TZ=UTC poetry run sphinx-build -b html docs docs/_build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build
+          publish_branch: documentation
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"

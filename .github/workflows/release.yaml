@@ -18,19 +18,19 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@v4
       - name: Poetry install
-        uses: abatilo/actions-poetry@v2
+        uses: snok/install-poetry@v1
         with:
-          poetry-version: "1.6.1"
-      - name: Setup a local virtual environment
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-      - uses: actions/cache@v3
-        name: Define a cache for the virtual environment based on the dependencies lock file
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      - name: Load virtual environment cache
+        id: cache
+        uses: actions/cache@v2
         with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
+          path: .venv
+          key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: poetry install
       - name: Update project version
         env:
