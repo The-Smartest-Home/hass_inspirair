@@ -9,7 +9,7 @@
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-![img.png](docs/tutorial/mqtt_device.png | width=300)
+<img src="docs/tutorial/mqtt_device.png" width=50% height=50%>
 
 A python application that connects to the ventilation system `InspirAir® Home` from `Aldes` via ModBus and exposes it as a device for [Home Assistant](https://www.home-assistant.io/) .
 
@@ -19,7 +19,7 @@ A python application that connects to the ventilation system `InspirAir® Home` 
 ```mermaid
 graph LR
     P(hass-inspirair) <-- MQTT --> M(MQTT Broker)
-    I[InspirAir® Home] <-- ModBus --> P
+    I[InspirAir Home] <-- ModBus --> P
     HM(Home Assistant \n MQTT Integration) <--MQTT--> M
     H[Home Assistant] <----> HM
 ```
@@ -114,6 +114,10 @@ sequenceDiagram
 
 ```
 
+</details>
+<details>
+<summary>5. Multilanguage Support</summary>
+Default language is german, however, an english translation is available.
 </details>
 
 ## Supported Models
