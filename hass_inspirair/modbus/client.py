@@ -186,7 +186,7 @@ async def poll_values() -> AldesModbusResponse:
                 (None, decoder_2.skip_bytes(1 * WORD_SIZE)),  # 283
                 ("u1_value", decoder_2.decode_16bit_int()),  # 284
                 ("u2_value", decoder_2.decode_16bit_int()),  # 285
-                ("supply_voltage", decoder_3.decode_16bit_uint()),  # 337
+                ("supply_voltage", round(decoder_3.decode_16bit_uint() / 10, 2)),  # 337
                 ("voltage_0_10", decoder_3.decode_16bit_uint()),  # 338
                 ("switch_state", decoder_3.decode_16bit_uint()),  # 339
                 ("usb_state", decoder_3.decode_16bit_uint()),  # 340

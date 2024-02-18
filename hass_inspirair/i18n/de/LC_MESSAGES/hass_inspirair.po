@@ -162,11 +162,11 @@ msgstr "Zuluft Druck"
 
 #: hass_inspirair/modbus/model.py:154
 msgid "extract_speed"
-msgstr "Abluft Geschwindigkeit"
+msgstr "Abluft Lüftergeschwindigkeit"
 
 #: hass_inspirair/modbus/model.py:155
 msgid "supply_speed"
-msgstr "Zuluft Geschwindigkeit"
+msgstr "Zuluft Lüftergeschwindigkeit"
 
 #: hass_inspirair/modbus/model.py:156
 msgid "extract_supply_ratio"

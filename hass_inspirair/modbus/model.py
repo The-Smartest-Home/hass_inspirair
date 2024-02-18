@@ -41,9 +41,13 @@ class TemperaturSensor(SensorWithUnit[float]):
     device_class: str = "temperature"
 
 
-class VoltageSensor(SensorWithUnit[int]):
+class GenericVoltageSensor(SensorWithUnit[T], Generic[T]):
     unit: str = Field(default="V")
     device_class: str = "voltage"
+
+
+class VoltageSensor(GenericVoltageSensor[int]):
+    pass
 
 
 class FlowSensor(SensorWithUnit[int]):
@@ -56,9 +60,9 @@ class PressureSensor(SensorWithUnit[int]):
     device_class: str = "atmospheric_pressure"
 
 
-class SpeedSensor(SensorWithUnit[int]):
-    unit: str = Field(default="m/s")
-    device_class: str = "speed"
+class RotationSensor(SensorWithUnit[int]):
+    unit: str = Field(default="Hz")
+    device_class: str = "frequency"
 
 
 class TimeSensor(SensorWithUnit[int]):
@@ -151,15 +155,15 @@ class AldesModbusResponse(BaseModel):
     supply_airflow: FlowSensor = Field(description=_("supply_airflow"))
     extract_pressure: PressureSensor = Field(description=_("extract_pressure"))
     supply_pressure: PressureSensor = Field(description=_("supply_pressure"))
-    extract_speed: SpeedSensor = Field(description=_("extract_speed"))
-    supply_speed: SpeedSensor = Field(description=_("supply_speed"))
+    extract_speed: RotationSensor = Field(description=_("extract_speed"))
+    supply_speed: RotationSensor = Field(description=_("supply_speed"))
     extract_supply_ratio: SensorBase[int] = Field(description=_("extract_supply_ratio"))
     temperature_summer_comfort: TemperaturSensor = Field(
         description=_("temperature_summer_comfort")
     )
     u1_value: VoltageSensor = Field(description=_("u1_value"))
     u2_value: VoltageSensor = Field(description=_("u2_value"))
-    supply_voltage: VoltageSensor = Field(description=_("supply_voltage"))
+    supply_voltage: GenericVoltageSensor[float] = Field(description=_("supply_voltage"))
     voltage_0_10: VoltageSensor = Field(description=_("voltage_0_10"))
     switch_state: SensorBase[int] = Field(description=_("switch_state"))
     usb_state: SensorBase[int] = Field(description=_("usb_state"))
