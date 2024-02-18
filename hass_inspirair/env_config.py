@@ -19,17 +19,19 @@ class EnvConfigMeta(type):
     HI_MODBUS_TCP_HOST = "localhost"
     HI_MODBUS_TCP_PORT = 5020
 
+    _file_config = None
+
     def _read_config(self) -> dict[str, str]:
-        if not hasattr(self, "__file_config"):
+        if self._file_config is None:
             config = configparser.ConfigParser()
             config.read(os.getenv("HI_CFG_FILE", "./config.ini"))
 
-            self.__file_config = {
+            self._file_config = {
                 "_".join(["HI", sec_name, config_key]).upper(): config_value
                 for sec_name, sec_val in config.items()
                 for config_key, config_value in sec_val.items()
             }
-        return self.__file_config
+        return self._file_config
 
     def __getattribute__(self, item: str) -> Any:
         super_value = super().__getattribute__(item)
