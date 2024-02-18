@@ -61,7 +61,6 @@ async def handle_ha_state(message: Message, mqtt_client: Client) -> None:
 
 
 async def mqtt_action_loop(mqtt_client: Client) -> None:
-    mqtt_client.subscribe
     logger.info("starting mqtt rpc loop")
     # poll one time to get the unique id
     response = await poll_push(mqtt_client)
@@ -73,24 +72,21 @@ async def mqtt_action_loop(mqtt_client: Client) -> None:
         [config.get_base_topic("+", response.serial_id.value, "+"), "config"]
     )
 
-    async with mqtt_client.messages() as messages:
-        # react to ha status change and setters
+    await mqtt_client.subscribe(setter_topic)
 
-        await mqtt_client.subscribe(setter_topic)
+    await mqtt_client.subscribe(config.ha_state_topic)
+    await mqtt_client.subscribe(config_topic)
 
-        await mqtt_client.subscribe(config.ha_state_topic)
-        await mqtt_client.subscribe(config_topic)
-
-        async for message in messages:
-            logger.debug(message.__dict__)
-            if message.topic.matches(config.ha_state_topic):
-                await handle_ha_state(message, mqtt_client)
-            elif message.topic.matches(setter_topic):
-                if message.topic.matches(f"+/+/{response.fan_mode.id}/+/set"):
-                    await set_fan_mode(message, mqtt_client)
-                else:
-                    await set_unknown(message, mqtt_client)
-            elif message.topic.matches(config_topic):
-                pass
+    async for message in mqtt_client.messages:
+        logger.debug(message.__dict__)
+        if message.topic.matches(config.ha_state_topic):
+            await handle_ha_state(message, mqtt_client)
+        elif message.topic.matches(setter_topic):
+            if message.topic.matches(f"+/+/{response.fan_mode.id}/+/set"):
+                await set_fan_mode(message, mqtt_client)
             else:
-                logger.warning(f"Received message on unexpected topic {message.topic}")
+                await set_unknown(message, mqtt_client)
+        elif message.topic.matches(config_topic):
+            pass
+        else:
+            logger.warning(f"Received message on unexpected topic {message.topic}")
