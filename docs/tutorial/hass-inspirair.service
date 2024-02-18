@@ -1,0 +1,14 @@
+[Unit]
+Description=Home Assistant InspirAir
+After=network.target
+
+[Service]
+WorkingDirectory=/home/aldes
+User=aldes
+Group=aldes
+Type=simple
+ExecStart=/home/aldes/.local/bin/ha-inspirair
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
