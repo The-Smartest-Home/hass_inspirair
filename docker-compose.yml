@@ -1,6 +1,24 @@
 version: "3.9"
 
 services:
+  client-pip:
+    profiles:
+      - e2e
+    restart: unless-stopped
+    build:
+      args:
+        TARGET_PYTHON_VERSION: $(TARGET_PYTHON_VERSION)
+      dockerfile_inline: |
+        ARG TARGET_PYTHON_VERSION 
+        FROM python:$TARGET_PYTHON_VERSION
+        COPY config.ini config.ini
+        COPY /dist/ /dist
+        RUN pip install /dist/hass_inspirair*.whl
+        ENV HI_MQTT_HOST=mqtt \
+            HI_MODBUS_CLIENT=hass_inspirair.modbus.client.get_async_tcp_client \ 
+            HI_MODBUS_TCP_HOST=modbus \
+            HI_MODBUS_TCP_PORT=5020 
+        CMD python -m hass_inspirair
   client:
     restart: unless-stopped
     build:
