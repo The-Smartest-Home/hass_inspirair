@@ -21,10 +21,18 @@ def _init_logger() -> None:
     logger.addHandler(handler)
 
 
+def config_file(config_path: str) -> str:
+    from os.path import exists
+
+    if not exists(config_path):
+        raise argparse.ArgumentTypeError("'%s' does not exists" % config_path)
+    os.environ["HI_CFG_FILE"] = config_path
+    return config_path
+
+
 parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", default="./config.ini")
+parser.add_argument("-c", "--config", type=config_file)
 args = parser.parse_args()
-os.environ["HI_CFG_FILE"] = args.config
 
 
 def main() -> None:
