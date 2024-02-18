@@ -37,8 +37,12 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry install
+        run: |
+          poetry install
+          poetry build
       - name: Run Tests
         env:
           HI_CFG_LANGUAGE: de
-        run: poetry run pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
+        run: |
+          TARGET_PYTHON_VERSION=${{ matrix.python-version }} docker compose up --build client-pip mqtt modbus -d --wait
+          poetry run pytest --junitxml=reports/pytest-${{ matrix.os }}-${{ matrix.python-version }}.xml
