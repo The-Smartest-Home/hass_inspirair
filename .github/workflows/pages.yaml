@@ -1,6 +1,7 @@
-name: Build Pages
+name: 📖 Build Pages
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -15,17 +16,31 @@ on:
       - README.md
       - .github/workflows/pages.yml
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
       - name: Install poetry
         uses: snok/install-poetry@v1
         with:
@@ -46,12 +61,13 @@ jobs:
           set -o errexit -o pipefail -o nounset
           find . -type f -name \*.md | awk '{print "sed -i \"s/mermaid/{mermaid}/\" " $1}' | bash
           TZ=UTC poetry run sphinx-build -b html docs docs/_build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_build
-          publish_branch: documentation
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
+          # Upload entire repository
+          path: "docs/_build/"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
