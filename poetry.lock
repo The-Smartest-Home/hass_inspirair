@@ -2,13 +2,13 @@
 
 [[package]]
 name = "aiomqtt"
-version = "2.0.0"
+version = "2.0.1"
 description = "The idiomatic asyncio MQTT client, wrapped around paho-mqtt"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "aiomqtt-2.0.0-py3-none-any.whl", hash = "sha256:f3b97eca4a5a2c40769ed14f660520f733be1d2ec383a9976153fe49141e2fa2"},
-    {file = "aiomqtt-2.0.0.tar.gz", hash = "sha256:3d480429334bdba4e4b9936c6cc198ea4f76a94d36cf294e0f713ec59f6a2120"},
+    {file = "aiomqtt-2.0.1-py3-none-any.whl", hash = "sha256:7c26a867212366ae0841571e6c2d06cebc00c2de029475b920c2cd7396aeacea"},
+    {file = "aiomqtt-2.0.1.tar.gz", hash = "sha256:60f6451c8ab7235cfb392b1b0cab398e9bc6040f4b140628c0615371abcde15f"},
 ]
 
 [package.dependencies]
@@ -225,6 +225,25 @@ files = [
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[[package]]
+name = "click-option-group"
+version = "0.5.6"
+description = "Option groups missing in Click"
+optional = false
+python-versions = ">=3.6,<4"
+files = [
+    {file = "click-option-group-0.5.6.tar.gz", hash = "sha256:97d06703873518cc5038509443742b25069a3c7562d1ea72ff08bfadde1ce777"},
+    {file = "click_option_group-0.5.6-py3-none-any.whl", hash = "sha256:38a26d963ee3ad93332ddf782f9259c5bdfe405e73408d943ef5e7d0c3767ec7"},
+]
+
+[package.dependencies]
+Click = ">=7.0,<9"
+
+[package.extras]
+docs = ["Pallets-Sphinx-Themes", "m2r2", "sphinx"]
+tests = ["pytest"]
+tests-cov = ["coverage", "coveralls", "pytest", "pytest-cov"]
 
 [[package]]
 name = "colorama"
@@ -735,13 +754,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "3.6.2"
+version = "3.7.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pre_commit-3.6.2-py2.py3-none-any.whl", hash = "sha256:ba637c2d7a670c10daedc059f5c49b5bd0aadbccfcd7ec15592cf9665117532c"},
-    {file = "pre_commit-3.6.2.tar.gz", hash = "sha256:c3ef34f463045c88658c5b99f38c1e297abdcc0ff13f98d3370055fbbfabc67e"},
+    {file = "pre_commit-3.7.0-py2.py3-none-any.whl", hash = "sha256:5eae9e10c2b5ac51577c3452ec0a490455c45a0533f7960f993a0d01e59decab"},
+    {file = "pre_commit-3.7.0.tar.gz", hash = "sha256:e209d61b8acdcf742404408531f0c37d49d2c734fd7cff2d6076083d191cb060"},
 ]
 
 [package.dependencies]
@@ -753,13 +772,13 @@ virtualenv = ">=20.10.0"
 
 [[package]]
 name = "pydantic"
-version = "2.6.2"
+version = "2.6.4"
 description = "Data validation using Python type hints"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic-2.6.2-py3-none-any.whl", hash = "sha256:37a5432e54b12fecaa1049c5195f3d860a10e01bdfd24f1840ef14bd0d3aeab3"},
-    {file = "pydantic-2.6.2.tar.gz", hash = "sha256:a09be1c3d28f3abe37f8a78af58284b236a92ce520105ddc91a6d29ea1176ba7"},
+    {file = "pydantic-2.6.4-py3-none-any.whl", hash = "sha256:cc46fce86607580867bdc3361ad462bab9c222ef042d3da86f2fb333e1d916c5"},
+    {file = "pydantic-2.6.4.tar.gz", hash = "sha256:b1704e0847db01817624a6b86766967f552dd9dbf3afba4004409f908dcc84e6"},
 ]
 
 [package.dependencies]
@@ -911,13 +930,13 @@ python-dateutil = ">=2.8.0"
 
 [[package]]
 name = "pymodbus"
-version = "3.6.4"
+version = "3.6.6"
 description = "A fully featured modbus protocol stack in python"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "pymodbus-3.6.4-py3-none-any.whl", hash = "sha256:d67a82bd6f177b4b5e429ccd9c192deed3288fb342b5f5447937b0263fa17d27"},
-    {file = "pymodbus-3.6.4.tar.gz", hash = "sha256:6eee2c7eedb794317784c967096fa1fe42200357e9b5a349d838ee9159624fe2"},
+    {file = "pymodbus-3.6.6-py3-none-any.whl", hash = "sha256:5fb0d5c9b0c76535c4d0d86908d76f16e9475b66fdf74110949e5185386c9c7d"},
+    {file = "pymodbus-3.6.6.tar.gz", hash = "sha256:c4d556a0954d00a9e1c8f1d0de03f41c4800336e6d785e820f2917eeb4ee7736"},
 ]
 
 [package.dependencies]
@@ -925,9 +944,9 @@ pyserial = {version = ">=3.5", optional = true, markers = "extra == \"serial\""}
 
 [package.extras]
 all = ["pymodbus[development,documentation,repl,serial,simulator]"]
-development = ["build (>=1.0.3)", "codespell (>=2.2.2)", "coverage (>=7.4.0)", "mypy (>=1.6.0)", "pylint (>=2.17.2)", "pytest (>=7.3.1)", "pytest-asyncio (>=0.20.3)", "pytest-cov (>=4.1.0)", "pytest-timeout (>=2.2.0)", "pytest-xdist (>=3.3.1)", "ruff (>=0.1.3)", "twine (>=4.0.2)", "types-Pygments", "types-pyserial"]
+development = ["build (>=1.0.3)", "codespell (>=2.2.2)", "coverage (>=7.4.0)", "mypy (>=1.6.0)", "pylint (>=3.0.0)", "pytest (>=7.3.1)", "pytest-asyncio (>=0.20.3)", "pytest-cov (>=4.1.0)", "pytest-profiling (>=1.7.0)", "pytest-timeout (>=2.2.0)", "pytest-xdist (>=3.3.1)", "ruff (>=0.2.0)", "twine (>=4.0.2)", "types-Pygments", "types-pyserial"]
 documentation = ["Sphinx (>=5.3.0)", "recommonmark (>=0.7.1)", "sphinx-rtd-theme (>=1.1.1)"]
-repl = ["aiohttp (>=3.8.6)", "aiohttp (>=3.9.0b0)", "click (>=8.0.0)", "prompt-toolkit (>=3.0.36)", "pygments (>=2.15.0)", "typer[all] (>=0.7.0)"]
+repl = ["pymodbus-repl (>=2.0.3)"]
 serial = ["pyserial (>=3.5)"]
 simulator = ["aiohttp (>=3.8.6)", "aiohttp (>=3.9.0b0)"]
 
@@ -1038,17 +1057,18 @@ yaml = ["PyYaml (>=6.0.1)"]
 
 [[package]]
 name = "python-semantic-release"
-version = "9.1.1"
+version = "9.3.1"
 description = "Automatic Semantic Versioning for Python projects"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "python-semantic-release-9.1.1.tar.gz", hash = "sha256:fe4fc40f52cdddbfe82c710070978306b35e9e4f2c7d98a77db55bf6f5e544f2"},
-    {file = "python_semantic_release-9.1.1-py3-none-any.whl", hash = "sha256:4d45bc6540dd894663636ced5a98cf4d3ea5765a9f1f18f4ffef6ae0733e05a3"},
+    {file = "python-semantic-release-9.3.1.tar.gz", hash = "sha256:d92e1a3fbd5259dc67afad7e21977b08a301a5ba0ffd0f497ef9d330440a2dc0"},
+    {file = "python_semantic_release-9.3.1-py3-none-any.whl", hash = "sha256:9ba4187d2a984806679d6f22b63848cd69dda846454d42eb464b573334583916"},
 ]
 
 [package.dependencies]
 click = ">=8,<9"
+click-option-group = ">=0.5,<1.0"
 dotty-dict = ">=1.3.0,<2"
 gitpython = ">=3.0.8,<4"
 importlib-resources = ">=5.7,<7"
@@ -1061,7 +1081,7 @@ shellingham = ">=1.5.0.post1"
 tomlkit = ">=0.11,<1.0"
 
 [package.extras]
-dev = ["pre-commit", "ruff (==0.1.11)", "tox"]
+dev = ["pre-commit", "ruff (==0.3.3)", "tox"]
 docs = ["Sphinx (<=6.0.0)", "furo (>=2023.3.27)", "sphinx-autobuild (==2021.03.14)", "sphinxcontrib-apidoc (==0.3.0)"]
 mypy = ["mypy", "types-requests"]
 test = ["coverage[toml] (>=6,<8)", "pytest (>=7,<8)", "pytest-clarity (>=1.0.1)", "pytest-cov (>=4,<5)", "pytest-env (>=1.0,<2.0)", "pytest-lazy-fixture (>=0.6.3,<0.7.0)", "pytest-mock (>=3,<4)", "pytest-pretty (>=1.2.0,<2)", "pytest-xdist (>=2,<4)", "requests-mock (>=1.10.0,<2)", "responses (==0.23.3)", "types-pytest-lazy-fixture (>=0.6.3.3)"]
