@@ -68,16 +68,16 @@ async def _interact_with_client(
             for action in actions:
                 try:
                     rr = await action(client)
+                    if rr.isError():
+                        logger.error(f"Received Modbus library error({rr})")
+                        yield None
+                    if isinstance(rr, ExceptionResponse):
+                        logger.error(f"Received Modbus library exception ({rr})")
+                        yield None
+                    yield rr
                 except ModbusException as exc:
                     logger.error(f"Received ModbusException({exc}) from library")
                     yield None
-                if rr.isError():
-                    logger.error(f"Received Modbus library error({rr})")
-                    yield None
-                if isinstance(rr, ExceptionResponse):
-                    logger.error(f"Received Modbus library exception ({rr})")
-                    yield None
-                yield rr
 
 
 WORD_SIZE = 2
@@ -244,3 +244,6 @@ async def modbus_polling_loop(
             await asyncio.sleep(interval)
         except ModbusDecodingError as e:
             logger.exception("An error while fetching modbus data occurred.", e)
+        except Exception as e:
+            logger.exception("unexpected error occurred.", e)
+        await asyncio.sleep(1)
