@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     build:
       dockerfile_inline: |
-        FROM python:3.9 as build
+        FROM python:3.9 AS build
         RUN pip install poetry
         COPY poetry.lock pyproject.toml .
         RUN poetry install

@@ -2,14 +2,18 @@ import asyncio
 from typing import Any, Awaitable
 
 from pymodbus.client.mixin import ModbusClientMixin
-from pymodbus.pdu import ModbusRequest
+from pymodbus.pdu import ModbusPDU
 from typing_extensions import Self
 
 
 class MockClient(ModbusClientMixin):
     connected = True
 
-    async def execute(self, request: ModbusRequest) -> ModbusRequest:
+    async def execute(
+        self,
+        _no_response_expected: bool,
+        request: ModbusPDU,
+    ) -> ModbusPDU:
         request.registers = [1] * 100
         request.isError = lambda: False
         return request

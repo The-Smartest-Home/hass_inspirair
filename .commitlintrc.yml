@@ -6,6 +6,7 @@ rules:
     - 2
     - always
     - - ci
+      - deps
   # Type enum should be consistent across data science projects
   type-enum:
     - 2

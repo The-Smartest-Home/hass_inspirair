@@ -5,12 +5,12 @@ from typing import AsyncGenerator, Awaitable, Callable, List, Optional
 
 import pymodbus.client as ModbusClient
 from aiomqtt import Client
-from pymodbus import Framer
+from pymodbus import FramerType
 from pymodbus.client import AsyncModbusTcpClient
 from pymodbus.constants import Endian
 from pymodbus.exceptions import ModbusException
 from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.pdu import ExceptionResponse, ModbusResponse
+from pymodbus.pdu import ExceptionResponse, ModbusPDU
 
 from hass_inspirair.config import DEFAULT_CONFIG, Config
 from hass_inspirair.env_config import EnvConfig
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 lock = asyncio.Lock()
 
 
-def get_async_serial_client(framer: Framer = Framer.RTU) -> ModbusClient:
+def get_async_serial_client(framer: FramerType = FramerType.RTU) -> ModbusClient:
     return ModbusClient.AsyncModbusSerialClient(
         framer=framer,
         port=EnvConfig.HI_MODBUS_SERIAL_DEVICE,
@@ -35,7 +35,7 @@ def get_async_serial_client(framer: Framer = Framer.RTU) -> ModbusClient:
     )
 
 
-def get_async_tcp_client(framer: Framer = Framer.SOCKET) -> ModbusClient:
+def get_async_tcp_client(framer: FramerType = FramerType.SOCKET) -> ModbusClient:
     return AsyncModbusTcpClient(
         EnvConfig.HI_MODBUS_TCP_HOST,
         port=EnvConfig.HI_MODBUS_TCP_PORT,
@@ -57,8 +57,8 @@ async def get_async_client() -> ModbusClient:
 
 
 async def _interact_with_client(
-    *actions: Callable[[ModbusClient], Awaitable[ModbusResponse]]
-) -> AsyncGenerator[None, ModbusResponse]:
+    *actions: Callable[[ModbusClient], Awaitable[ModbusPDU]]
+) -> AsyncGenerator[None, ModbusPDU]:
     async with lock:
         async with await get_async_client() as client:
             logger.debug("connecting modbus client")
@@ -104,7 +104,7 @@ class ModbusDecodingError(Exception):
 async def poll_values() -> AldesModbusResponse:
     logger.debug("polling values...")
 
-    responses: List[Optional[ModbusResponse]] = []
+    responses: List[Optional[ModbusPDU]] = []
     async for response in _interact_with_client(
         lambda client: client.read_holding_registers(
             1, count=12, slave=EnvConfig.HI_MODBUS_SLAVE_ID
