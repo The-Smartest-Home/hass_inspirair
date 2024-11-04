@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hass_inspirair"
-version = "0.4.0"
+version = "0.5.0"
 description = ""
 authors = ["Kraus, Vadim <38394456+VadimKraus@users.noreply.github.com>"]
 license = "OSI Approved :: Apache Software License"
