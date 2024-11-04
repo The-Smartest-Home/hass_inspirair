@@ -3,7 +3,7 @@ name: ha-aldes
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
+  - python=3.10
   - pip=23.2.1
   - pip:
       - poetry==1.6.1
