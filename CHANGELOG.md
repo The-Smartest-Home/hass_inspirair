@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.6.0 (2024-11-04)
+
+### Features
+
+* feat: revert to minimal python 3.9 ([`64946e1`](https://github.com/The-Smartest-Home/hass_inspirair/commit/64946e10dbd976bac91bc244216c025291be5916))
+
+
 ## v0.5.0 (2024-11-04)
 
 ### Chores
