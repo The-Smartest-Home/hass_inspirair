@@ -23,13 +23,13 @@ services:
     restart: unless-stopped
     build:
       dockerfile_inline: |
-        FROM python:3.9 as build
+        FROM python:3.10 AS build
         RUN pip install poetry
         COPY poetry.lock pyproject.toml .
         RUN poetry install
         COPY . .
         RUN poetry build
-        FROM python:3.9 
+        FROM python:3.10 
         COPY --from=build /dist/ /dist
         RUN pip install /dist/hass_inspirair*.whl
         CMD python -m hass_inspirair

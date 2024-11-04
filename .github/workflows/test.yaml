@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -31,7 +31,7 @@ jobs:
           installer-parallel: true
       - name: Load virtual environment cache
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: .venv
           key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
