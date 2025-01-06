@@ -15,8 +15,8 @@ packages = [{include = "hass_inspirair"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
-pymodbus = {version = "^3.7.4", extras = ["serial"]}
-pydantic = "^2.9.2"
+pymodbus = {version = "^3.8.3", extras = ["serial"]}
+pydantic = "^2.10.4"
 aiomqtt = "^2.0.0"
 
 [tool.poetry.scripts]
@@ -26,7 +26,7 @@ ha-inspirair = 'hass_inspirair.__main__:main'
 pre-commit = "^4.0.1"
 pytest = ">=7.2,<9.0.0"
 babel = "^2.16.0"
-python-semantic-release = "^9.12.0"
+python-semantic-release = "^9.15.2"
 sphinx = "^7.2.6"
 furo = "^2024.8.6"
 myst-parser = "^3.0.1"
